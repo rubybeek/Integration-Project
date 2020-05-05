@@ -1,5 +1,5 @@
 
-% % initial guesses
+% % initial guessess
 % x0 = zeros(4);
 % x0(0) = 0.8; % Kp
 % x0(1) = 0.2; % Kd
