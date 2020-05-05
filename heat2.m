@@ -2,12 +2,12 @@
 % define energy balance model
 function dTdt = heat2(t,x,Q1,Q2)
     % Parameters
-    Ta = 23 + 273.15;   % K
-    U = 10.0;           % W/m^2-K
-    m = 4.0/1000.0;     % kg
+    Ta = 23 + 273.15;   % K (ambient temperature)
+    U = 10.0;           % W/m^2-K (Overall Heat Transfer Coefficient)
+    m = 4.0/1000.0;     % kg (mass)
     Cp = 0.5 * 1000.0;  % J/kg-K    
-    A = 10.0 / 100.0^2; % Area in m^2
-    As = 2.0 / 100.0^2; % Area in m^2
+    A = 10.0 / 100.0^2; % Area in m^2 (Surface Area Not Between Heaters)
+    As = 2.0 / 100.0^2; % Area in m^2 (Surface Area Between Heaters)
     alpha1 = 0.0100;    % W / % heater 1
     alpha2 = 0.0075;    % W / % heater 2
     eps = 0.9;          % Emissivity
