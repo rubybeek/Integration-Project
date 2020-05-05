@@ -1,4 +1,4 @@
-%close all; clear all; clc
+close all; clear all; clc
 
 % include tclab.m for initialization
 tclab;
@@ -21,14 +21,31 @@ for i = 1:399
     tic;
     if i==7
         disp('Turn on heater 1')
-        ht1 = 100;
-        ht2 = 0;
+        ht1 = 80;
         h1(ht1);
         h2(ht2);
     end
-    if i==150
+    if i==100
+        disp('Turn on heater 1')
+        ht1 = 20;
+        h1(ht1);
+        h2(ht2);
+    end
+    if i==250
+        disp('Turn on heater 1')
+        ht1 = 100;
+        h1(ht1);
+        h2(ht2);
+    end
+    if i==80
         disp('Turn on heater 2')
         ht2 = 100;
+        h1(ht1);
+        h2(ht2);
+    end
+    if i==200
+        disp('Turn on heater 2')
+        ht2 = 50;
         h1(ht1);
         h2(ht2);
     end
