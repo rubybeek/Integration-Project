@@ -1,0 +1,38 @@
+
+clearvars
+close all
+load('data.1.mat')
+
+% Subspace identification
+
+y1 = data(:,1);
+y2 = data(:,2);
+% y = [y1
+%      y2];
+ 
+u1 = data(:,3);
+u2 = data(:,4);
+
+
+n = 2;
+
+s = 3 * n;
+
+[At1, Bt1, Ct1, Dt1, x0t1, S1]=mysubid(y1 ,u1 ,s ,n);
+[At12, Bt12, Ct12, Dt12, x0t12, S12]=mysubid(y1 ,u1 ,s ,n);
+[At2, Bt2, Ct2, Dt2, x0t2, S2]=mysubid(y2 ,u2 ,s ,n);
+
+%%
+[num, den] = ss2tf(At,Bt,Ct,Dt);
+
+tf_system = num/den;
+
+discrete_system = c2d(tf_system);
+
+
+% 
+% for k = 1:399
+% 
+%     x(k+1) = At * x(k) + Bt * u(k)
+%    
+% end
