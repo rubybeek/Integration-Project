@@ -1,0 +1,153 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ffunlti</title><meta name="generator" content="MATLAB 8.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-11-09"><meta name="DC.source" content="ffunlti.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">FFUNLTI</a></li><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#6">Inputs</a></li><li><a href="#11">Outputs</a></li><li><a href="#14">Algorithm</a></li><li><a href="#15">Used By</a></li><li><a href="#16">Uses Functions</a></li><li><a href="#17">See Also</a></li><li><a href="#18">References</a></li></ul></div><h2>FFUNLTI<a name="1"></a></h2><p>Calculates the cost-function information for <a href="foptlti.html"><tt>foptlti</tt></a>.</p><h2>Syntax<a name="2"></a></h2><p><tt>[epsilon] = ffunlti(th,H,params,timing)</tt></p><p><tt>[epsilon,psi] = ffunlti(th,H,params,timing)</tt></p><p><tt>[epsilon,psi,U2] = ffunlti(th,H,params,timing)</tt></p><h2>Description<a name="5"></a></h2><p>This function implements the cost-fuction for <a href="foptlti.html"><tt>foptlti</tt></a> frequency domain optimization framework. It is not meant for standalone use.</p><h2>Inputs<a name="6"></a></h2><p><tt>th</tt> is the parameter vector describing the system.</p><p><tt>H</tt> is the frequency response function of the system to be optimized: an array of size <i>l</i> x <i>m</i> x <i>N</i> in which <i>H(:,:,i)</i> contains the complex FRF at the <i>i</i> th complex frequency.</p><p><tt>w</tt> are the complex frequencies at which the FRF is measured.</p><p><tt>params</tt> is a structure that contains the dimension parameters of the system, such as the order, the number of inputs, whether <tt>D</tt>, <tt>x0</tt> or <tt>K</tt> is present in the model.</p><p><tt>timing</tt> must be either <tt>'cont'</tt> or <tt>'disc'</tt>, indicating that the supplied model is continuous of discrete time. Note that this influences <i>only</i> the way in which the output normal parametrization is built. The user is responsible for supplying suitable frequency data.</p><h2>Outputs<a name="11"></a></h2><p><tt>epsilon</tt> is the output of the cost function, which is the square of the error between the output and the estimated output.</p><p><tt>psi</tt> is the Jacobian of epsilon.</p><p><tt>U2</tt> is the left null-space of Manifold matrix for the full parametrization [1].</p><h2>Algorithm<a name="14"></a></h2><p>The formation of the error-vector is done bu calculating the FRF of the current model:</p><p><img src="ffunlti_eq25905.png" alt="$$ \hat{H}(\xi_k;\theta) = C(\theta) {(\xi_k I_n - A(\theta) )}^{-1}&#xA;B(\theta) + D(\theta) $$"></p><p>The error-vector</p><p><img src="ffunlti_eq14031.png" alt="$$E_N \in \Re^{2 N \ell m}$$"></p><p>is build up such that its <i>i</i> th blockrow consists of</p><p><img src="ffunlti_eq10740.png" alt="$$\mathrm{vec}(\hat{H}(\xi_i,\theta)-H(\xi_i))$$"></p><p>, in which the real and imaginary components have been interleaved.</p><p>The Jacobian is formed efficiently by calculating FRFs as well. The formation of the Manifold matrix is performed according to [1]. A QR-factorization is used to obtain its left null-space.</p><h2>Used By<a name="15"></a></h2><p><a href="foptlti.html"><tt>foptlti</tt></a> (via <a href="lmmore.html"><tt>lmmore</tt></a>)</p><h2>Uses Functions<a name="16"></a></h2><p><a href="dth2ss.html"><tt>dth2ss</tt></a>, <a href="cth2ss.html"><tt>cth2ss</tt></a>, <a href="ltiitr.html"><tt>ltifrf</tt></a></p><h2>See Also<a name="17"></a></h2><p><a href="dfunlti.html"><tt>dfunlti</tt></a></p><h2>References<a name="18"></a></h2><p>[1] L.H. Lee and K. Poolla, "Identification of linear parameter varying systems using nonlinear programming", <i>Journal of Dynamic Systems</i>, Measurement and Control, col. 121, pp. 71-78, Mar 1999.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2012b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+%% FFUNLTI
+% Calculates the cost-function information for <foptlti.html |foptlti|>.
+
+%% Syntax
+% |[epsilon] = ffunlti(th,H,params,timing)|
+%%
+% |[epsilon,psi] = ffunlti(th,H,params,timing)|
+%%
+% |[epsilon,psi,U2] = ffunlti(th,H,params,timing)|
+
+%% Description
+% This function implements the cost-fuction for <foptlti.html |foptlti|>
+% frequency domain optimization framework. It is not meant for standalone
+% use.
+
+%% Inputs
+% |th| is the parameter vector describing the system.
+%% 
+% |H| is the frequency response function of the system to be optimized: an
+% array of size _l_ x _m_ x _N_ in which _H(:,:,i)_ contains the complex
+% FRF at the _i_ th complex frequency.
+%% 
+% |w| are the complex frequencies at which the FRF is measured.
+%% 
+% |params| is a structure that contains the dimension parameters of the
+% system, such as the order, the number of inputs, whether |D|, |x0| or |K|
+% is present in the model.
+%% 
+% |timing| must be either |'cont'| or |'disc'|, indicating that the
+% supplied model is continuous of discrete time. Note that this influences
+% _only_ the way in which the output normal parametrization is built. The
+% user is responsible for supplying suitable frequency data.
+          
+%% Outputs
+% |epsilon| is the output of the cost function, which is the square of the
+% error between the output and the estimated output.
+%%
+% |psi| is the Jacobian of epsilon.
+%%
+% |U2| is the left null-space of Manifold matrix for the full
+% parametrization [1].
+
+%% Algorithm
+% The formation of the error-vector is done bu calculating the FRF of the
+% current model:
+% 
+% $$ \hat{H}(\xi_k;\theta) = C(\theta) {(\xi_k I_n - A(\theta) )}^{-1}
+% B(\theta) + D(\theta) $$
+% 
+% The error-vector 
+%
+% $$E_N \in \Re^{2 N \ell m}$$
+%
+% is build up such that its _i_ th blockrow consists of
+%
+% $$\mathrm{vec}(\hat{H}(\xi_i,\theta)-H(\xi_i))$$
+%
+% , in which the real and imaginary
+% components have been interleaved.
+% 
+% The Jacobian is formed efficiently by calculating FRFs as well. The
+% formation of the Manifold matrix is performed according to [1]. A
+% QR-factorization is used to obtain its left null-space.
+
+%% Used By
+% <foptlti.html |foptlti|> (via <lmmore.html |lmmore|>)
+
+%% Uses Functions
+% <dth2ss.html |dth2ss|>, <cth2ss.html |cth2ss|>, <ltiitr.html |ltifrf|>
+
+%% See Also
+% <dfunlti.html |dfunlti|>
+
+%% References
+% [1] L.H. Lee and K. Poolla, "Identification of linear parameter varying
+% systems using nonlinear programming", _Journal of Dynamic Systems_,
+% Measurement and Control, col. 121, pp. 71-78, Mar 1999.
+
+
+
+
+##### SOURCE END #####
+--></body></html>
