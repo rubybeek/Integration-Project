@@ -1,0 +1,140 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>cth2ss</title><meta name="generator" content="MATLAB 8.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-11-09"><meta name="DC.source" content="cth2ss.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">CSS2TH</a></li><li><a href="#2">Syntax</a></li><li><a href="#7">Description</a></li><li><a href="#8">Inputs</a></li><li><a href="#11">Outputs</a></li><li><a href="#14">Remarks</a></li><li><a href="#15">Algorithm</a></li><li><a href="#17">Used By</a></li><li><a href="#18">See Also</a></li><li><a href="#19">References</a></li></ul></div><h2>CSS2TH<a name="1"></a></h2><p>Converts a parameter vector into a continuous-time LTI state-space model.</p><h2>Syntax<a name="2"></a></h2><p><tt>[A,C] = cth2ss(theta,params)</tt></p><p><tt>[A,B,C] = cth2ss(theta,params)</tt></p><p><tt>[A,B,C,D] = cth2ss(theta,params)</tt></p><p><tt>[A,B,C,D,x0] = cth2ss(theta,params)</tt></p><p><tt>[A,B,C,D,x0,K] = cth2ss(theta,params)</tt></p><h2>Description<a name="7"></a></h2><p>his function converts a parameter vector that describes a continuous-time state space model into the state space matrices of that model.</p><p><img src="cth2ss_eq55418.png" alt="$$\dot{x}(t) = Ax(t) + Bu(t) + Ke(t)$$"></p><p><img src="cth2ss_eq16141.png" alt="$$y(t) = Cx(t) + Du(t) + e(t)$$"></p><h2>Inputs<a name="8"></a></h2><p><tt>theta</tt> is the parameter vector describing the system.</p><p><tt>params</tt> is a structure that contains the dimension parameters of the system, such as the order, the number of inputs and whether <tt>D</tt>, <tt>x0</tt> or <tt>K</tt> is present.</p><p><tt>T</tt> is the transformation matrix between the input state space system and the state space system in the form described by <tt>theta</tt>.</p><h2>Outputs<a name="11"></a></h2><p><tt>A,B,C,D</tt> are system matrices describing the state space system. If <tt>theta</tt> does not contain  parameters for <tt>D</tt>, this matrix will be returned as an empty matrix.</p><p><tt>x0</tt> is the initial state. If <tt>theta</tt> does not contain parameters for <tt>x0</tt>, this vector will be returned as an empty matrix.</p><p><tt>K</tt> is the Kalman gain. If <tt>theta</tt> does not contain parameters for <tt>K</tt>, this vector will be returned as an empty matrix.</p><h2>Remarks<a name="14"></a></h2><p>This function is based on the SMI Toolbox 2.0 function <tt>cth2ss</tt>, copyright 1996 Johan Bruls. Support for the omission of <tt>D</tt>, <tt>x0</tt> and/or <tt>K</tt> has been added, as well as support for the full parametrization.</p><h2>Algorithm<a name="15"></a></h2><p>The model parametrization for the output normal form and the tridiagonal parametrization is carried out according to [1]. The full model parametrization is a simple vectorization of the system matrices. In its most general form, the parameter vector is given by</p><p><img vspace="5" hspace="5" src="param.jpg" alt=""> </p><h2>Used By<a name="17"></a></h2><p><a href="foptlti.html"><tt>foptlti</tt></a>, <a href="ffunlti.html"><tt>ffunlti</tt></a></p><h2>See Also<a name="18"></a></h2><p><a href="css2th.html"><tt>css2th</tt></a>, <a href="dth2ss.html"><tt>dth2ss</tt></a></p><h2>References<a name="19"></a></h2><p>[1] B. Haverkamp, <i>Subspace Method Identification, Theory and Practice.</i> PhD thesis, Delft University of Technology, Delft, The Netherlands, 2000.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2012b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+%% CSS2TH
+% Converts a parameter vector into a continuous-time LTI state-space model.
+
+%% Syntax
+% |[A,C] = cth2ss(theta,params)|
+%%
+% |[A,B,C] = cth2ss(theta,params)|
+%%
+% |[A,B,C,D] = cth2ss(theta,params)|
+%%
+% |[A,B,C,D,x0] = cth2ss(theta,params)|
+%%
+% |[A,B,C,D,x0,K] = cth2ss(theta,params)| 
+
+%% Description
+% his function converts a parameter vector that describes a continuous-time
+% state space model into the state space matrices of that model.
+%
+% $$\dot{x}(t) = Ax(t) + Bu(t) + Ke(t)$$
+%
+% $$y(t) = Cx(t) + Du(t) + e(t)$$
+%
+
+%% Inputs
+% |theta| is the parameter vector describing the system.
+%%
+% |params| is a structure that contains the dimension parameters of the
+% system, such as the order, the number of inputs and whether |D|, |x0| or
+% |K| is present.
+%%
+% |T| is the transformation matrix between the input state space system and
+% the state space system in the form described by |theta|.
+
+%% Outputs
+% |A,B,C,D| are system matrices describing the state space system. If
+% |theta| does not contain  parameters for |D|, this matrix will be
+% returned as an empty matrix.
+
+%%
+% |x0| is the initial state. If |theta| does not contain parameters for
+% |x0|, this vector will be returned as an empty matrix.
+
+%%
+% |K| is the Kalman gain. If |theta| does not contain parameters for |K|,
+% this vector will be returned as an empty matrix.
+
+%% Remarks
+% This function is based on the SMI Toolbox 2.0 function |cth2ss|,
+% copyright 1996 Johan Bruls. Support for the omission of |D|, |x0| and/or
+% |K| has been added, as well as support for the full parametrization.
+
+%% Algorithm
+% The model parametrization for the output normal form and the tridiagonal
+% parametrization is carried out according to [1]. The full model
+% parametrization is a simple vectorization of the system matrices. In its
+% most general form, the parameter vector is given by
+%%
+% <<param.jpg>>
+
+%% Used By
+% <foptlti.html |foptlti|>, <ffunlti.html |ffunlti|>
+
+%% See Also
+% <css2th.html |css2th|>, <dth2ss.html |dth2ss|>
+
+%% References
+% [1] B. Haverkamp, _Subspace Method Identification, Theory and Practice._
+% PhD thesis, Delft University of Technology, Delft, The Netherlands, 2000.
+##### SOURCE END #####
+--></body></html>

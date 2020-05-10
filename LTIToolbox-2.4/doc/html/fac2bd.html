@@ -1,0 +1,147 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>fac2bd</title><meta name="generator" content="MATLAB 8.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-11-09"><meta name="DC.source" content="fac2bd.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">FAC2B</a></li><li><a href="#2">Syntax</a></li><li><a href="#4">Description</a></li><li><a href="#5">Inputs</a></li><li><a href="#9">Outputs</a></li><li><a href="#12">Algorithm</a></li><li><a href="#17">Used By</a></li><li><a href="#18">Uses Functions</a></li><li><a href="#19">See Also</a></li><li><a href="#20">References</a></li></ul></div><h2>FAC2B<a name="1"></a></h2><p>Estimates the <i>B</i> and <i>D</i> matrices in discrete-time and continuous-time state-space models from frequency response function (FRF) data.</p><h2>Syntax<a name="2"></a></h2><p><tt>[B,D] = fac2b(A,C,H,w)</tt></p><p><tt>[B,D] = fac2b(A,C,H1,w1,...,Hp,wp)</tt></p><h2>Description<a name="4"></a></h2><p>This function estimates the <i>B</i> and <i>D</i> matrices corresponding to a discrete-time or continuous-time LTI state-space model. The estimate is based on the measured frequency response function (FRF) data, and on the <i>A</i> and <i>C</i> matrices, which are possibly estimated using <a href="fdmodom.html"><tt>fdmodom</tt></a> or <a href="fcmodom.html"><tt>fcmodom</tt></a>.  Several data batches can be concatenated, though this is possible for discrete-time models only.</p><h2>Inputs<a name="5"></a></h2><p><tt>A</tt> is the state-space model's <i>A</i> matrix.</p><p><tt>C</tt> is the state-space model's <i>C</i> matrix.</p><p><tt>H</tt> is the measured frequency response function (FRF). This should be a matrix which follows the convention of MATLAB 6; it should be <i>l</i> x <i>m</i> x <i>N</i> in which <i>H(:,:,i)</i> contains the complex FRF at the <i>i</i> th complex frequency.</p><p><tt>w</tt> is the vector of complex frequencies at which the FRF is measured. Although the function can operate using arbitrary complex frequencies, the following two choices are rather standard for discrete and continuous time models respectively:</p><p><img src="fac2bd_eq55652.png" alt="$$ \mathtt{w} = e^{j\omega} $$"></p><p><img src="fac2bd_eq95581.png" alt="$$ \mathtt{w} = j\omega $$"></p><p>For discrete-time models, multiple data batches can be concatenated by appending additional <tt>H</tt>, <tt>w</tt> pairs to the parameter list.</p><h2>Outputs<a name="9"></a></h2><p><tt>B</tt> is the state-space model's <i>B</i> matrix.</p><p><tt>D</tt> is the state-space model's <i>D</i> matrix.</p><p><tt>R</tt> is a compressed data matrix that can be used to concatenate another data batch in a subsequent call to <a href="fac2bd.html"><tt>fac2bd</tt></a> (discrete-time models only).</p><h2>Algorithm<a name="12"></a></h2><p>Estimating <i>B</i> and <i>D</i> from the frequency response function (FRF) data and <i>A</i> and <i>C</i> is a linear regression [1]:</p><p><img vspace="5" hspace="5" src="fac2bd_pic1.jpg" alt=""> </p><p>The regression matrix <tt>Phi</tt> and data matrix <tt>theta</tt> are given by:</p><p><img vspace="5" hspace="5" src="fac2b_pic2.jpg" alt=""> </p><p>The function <a href="ltiitr.html"><tt>ltifrf</tt></a> is used to efficiently fill the regression matrix <tt>Phi</tt>.</p><h2>Used By<a name="17"></a></h2><p>This a top-level function that is used directly by the user.</p><h2>Uses Functions<a name="18"></a></h2><p><a href="ltiitr.html"><tt>ltifrf</tt></a></p><h2>See Also<a name="19"></a></h2><p><a href="fac2b.html"><tt>fac2b</tt></a>, <a href="fdmodom.html"><tt>fdmodom</tt></a>, <a href="fcmodom.html"><tt>fcmodom</tt></a>, <a href="ltiitr.html"><tt>ltifrf</tt></a></p><h2>References<a name="20"></a></h2><p>[1] T. McKElvey, H. Akcay, and L. Ljung, "Subspace-based multivariable system identification from frequency response data", <i>IEEE Transactions on Automatic Control</i>, vol. 41, pp. 960-979, July 1996.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2012b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+%% FAC2B
+% Estimates the _B_ and _D_ matrices in discrete-time and continuous-time
+% state-space models from frequency response function (FRF) data.
+
+%% Syntax
+% |[B,D] = fac2b(A,C,H,w)|
+%%
+% |[B,D] = fac2b(A,C,H1,w1,...,Hp,wp)|
+
+%% Description
+% This function estimates the _B_ and _D_ matrices corresponding to a
+% discrete-time or continuous-time LTI state-space model. The estimate is
+% based on the measured frequency response function (FRF) data, and on the
+% _A_ and _C_ matrices, which are possibly estimated using <fdmodom.html
+% |fdmodom|> or <fcmodom.html |fcmodom|>.  Several data batches can be
+% concatenated, though this is possible for discrete-time models only.
+
+%% Inputs
+% |A| is the state-space model's _A_ matrix.
+%%
+% |C| is the state-space model's _C_ matrix.
+%%
+% |H| is the measured frequency response function (FRF). This should be a
+% matrix which follows the convention of MATLAB 6; it should be _l_ x _m_ x
+% _N_ in which _H(:,:,i)_ contains the complex FRF at the _i_ th complex
+% frequency.
+%%          
+% |w| is the vector of complex frequencies at which the FRF is measured.
+% Although the function can operate using arbitrary complex frequencies,
+% the following two choices are rather standard for discrete and continuous
+% time models respectively:
+%
+% $$ \mathtt{w} = e^{j\omega} $$
+%
+% $$ \mathtt{w} = j\omega $$
+%
+% For discrete-time models, multiple data batches can be concatenated by
+% appending additional |H|, |w| pairs to the parameter list.
+
+%% Outputs
+% |B| is the state-space model's _B_ matrix.
+%%
+% |D| is the state-space model's _D_ matrix.
+%%
+% |R| is a compressed data matrix that can be used to concatenate another
+% data batch in a subsequent call to <fac2bd.html |fac2bd|> (discrete-time
+% models only).
+
+%% Algorithm
+% Estimating _B_ and _D_ from the frequency response function (FRF) data
+% and _A_ and _C_ is a linear regression [1]: 
+%%
+% <<fac2bd_pic1.jpg>> 
+%%
+% The regression matrix |Phi| and data matrix |theta| are given by:
+%%
+% <<fac2b_pic2.jpg>> 
+%%
+% The function <ltiitr.html |ltifrf|> is used to efficiently fill the
+% regression matrix |Phi|.
+
+%% Used By
+% This a top-level function that is used directly by the user.
+
+%% Uses Functions
+% <ltiitr.html |ltifrf|>
+
+%% See Also
+% <fac2b.html |fac2b|>, <fdmodom.html |fdmodom|>, <fcmodom.html
+% |fcmodom|>, <ltiitr.html |ltifrf|>
+
+%% References
+% [1] T. McKElvey, H. Akcay, and L. Ljung, "Subspace-based multivariable
+% system identification from frequency response data", _IEEE Transactions
+% on Automatic Control_, vol. 41, pp. 960-979, July 1996.
+##### SOURCE END #####
+--></body></html>

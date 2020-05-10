@@ -1,0 +1,156 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>dmodpo</title><meta name="generator" content="MATLAB 8.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-11-09"><meta name="DC.source" content="dmodpo.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">DMODPO</a></li><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#6">Inputs</a></li><li><a href="#9">Outputs</a></li><li><a href="#12">Remarks</a></li><li><a href="#13">Algorithm</a></li><li><a href="#16">Used By</a></li><li><a href="#17">See Also</a></li><li><a href="#18">References</a></li></ul></div><h2>DMODPO<a name="1"></a></h2><p>Estimates the <i>A</i> and <i>C</i> matrices and the Kalman gain in a discrete-time state-space model from time-domain data that was preprocessed by <a href="dordpo.html"><tt>dordpo</tt></a>.</p><h2>Syntax<a name="2"></a></h2><p><tt>[A,C] = dmodpo(R,n)</tt></p><p><tt>[A,C,K] = dmodpo(R,n)</tt></p><p><tt>[A,C,K] = dmodpo(R,n,'stable')</tt></p><h2>Description<a name="5"></a></h2><p>This function estimates the <i>A</i> and <i>C</i> matrices corresponding to an <i>n</i> th order discrete-time LTI state-space model. A Kalman gain can be estimated as well. The compressed data matrix <i>R</i> from the preprocessor function <a href="dordpo.html"><tt>dordpo</tt></a> is used to this end.</p><h2>Inputs<a name="6"></a></h2><p><tt>R</tt> is a compressed data matrix containing information about the measured data, as well as information regarding the system dimensions.</p><p><tt>n</tt> is the desired model order <i>n</i>..</p><p><tt>stable</tt> estimates a stable A matrix, see [2].</p><h2>Outputs<a name="9"></a></h2><p><tt>A</tt> is the state-space model's <i>A</i> matrix.</p><p><tt>C</tt> is the state-space model's <i>C</i> matrix.</p><p><tt>K</tt> is the Kalman gain matrix.</p><h2>Remarks<a name="12"></a></h2><p>The data matrix <tt>R</tt> generated by the M-file implementation of <a href="dordpo.html"><tt>dordpo</tt></a> is <i>incompatible</i> with the <tt>R</tt> matrix generated by the MEX-implementation of <a href="dordpo.html"><tt>dordpo</tt></a>. Therefore, either the M-files should be used for both <a href="dordpo.html"><tt>dordpo</tt></a> and <a href="dmodpo.html"><tt>dmodpo</tt></a>, or the MEX-files should be used for both functions. The stable option only works in the M-file implementation/</p><p>The MEX-implementation of <a href="dmodpo.html"><tt>dmodpo</tt></a> uses the <tt>IB01BD</tt> function from the SLICOT library.</p><p>The MEX-implementation may generate the following warning:</p><p><tt>Warning: Covariance matrices are too small: returning K=0</tt></p><p>This implies that there is not enough information available to reliably estimate a Kalman gain. <i>K</i> = <i>0</i> is returned for stability reasons in this case.</p><h2>Algorithm<a name="13"></a></h2><p>The data matrix obtained with <a href="dordpi.html"><tt>dordpi</tt></a> contains the weighted left singular vectors of the <i>R32</i> matrix. The first <i>n</i> of these vectors form an estimate <i>Os</i> of the system's extended observability matrix:</p><p><img vspace="5" hspace="5" src="extobs.jpg" alt=""> </p><p>The estimates <tt>Ahat</tt> and <tt>Chat</tt> are obtained by linear regression:</p><p><img src="dmodpo_eq11300.png" alt="$$ \hat{C} = \hat{\mathcal{O}}_s(1:\ell,:) $$"></p><p><img src="dmodpo_eq16309.png" alt="$$ \hat{A} = \hat{\mathcal{O}}_s(1:(s-1)\ell,:)^\dagger&#xA;\hat{\mathcal{O}}_s(\ell+1:s\ell,:) $$"></p><p>The optional Kalman gain is aclculated based on estimated noise covariance matrices [1].</p><h2>Used By<a name="16"></a></h2><p>This a top-level function that is used directly by the user.</p><h2>See Also<a name="17"></a></h2><p><a href="dordpo.html"><tt>dordpo</tt></a>, <a href="dordpi.html"><tt>dordpi</tt></a>, <a href="dmodpi.html"><tt>dmodpi</tt></a>, <a href="dordrs.html"><tt>dordrs</tt></a>, <a href="dmodrs.html"><tt>dmodrs</tt></a>,</p><h2>References<a name="18"></a></h2><p>[1] M. Verheagen, "Identification of the deterministic part of MIMO state space models given in innovations form from input-output data", <i>Automatica</i>, vol. 30, no. 1, pp. 61-74, 1994.</p><p>[2] J.M. Maciejowski, "Guaranteed Stability with Subspace Methods", Submitted to Systems and Control Letters, 1994.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2012b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+%% DMODPO
+% Estimates the _A_ and _C_ matrices and the Kalman gain in a discrete-time
+% state-space model from time-domain data that was preprocessed by
+% <dordpo.html |dordpo|>.
+
+%% Syntax
+% |[A,C] = dmodpo(R,n)|
+%%
+% |[A,C,K] = dmodpo(R,n)|
+%%
+% |[A,C,K] = dmodpo(R,n,'stable')|
+
+%% Description
+% This function estimates the _A_ and _C_ matrices corresponding to an _n_
+% th order discrete-time LTI state-space model. A Kalman gain can be
+% estimated as well. The compressed data matrix _R_ from the preprocessor
+% function <dordpo.html |dordpo|> is used to this end.
+  
+%% Inputs
+% |R| is a compressed data matrix containing information about the measured
+% data, as well as information regarding the system dimensions.
+%%
+% |n| is the desired model order _n_..
+%%
+% |stable| estimates a stable A matrix, see [2].
+
+%% Outputs
+% |A| is the state-space model's _A_ matrix.
+%%
+% |C| is the state-space model's _C_ matrix.
+%%
+% |K| is the Kalman gain matrix.
+
+%% Remarks
+% The data matrix |R| generated by the M-file implementation of
+% <dordpo.html |dordpo|> is _incompatible_ with the |R| matrix generated by
+% the MEX-implementation of <dordpo.html |dordpo|>. Therefore, either the
+% M-files should be used for both <dordpo.html |dordpo|> and <dmodpo.html
+% |dmodpo|>, or the MEX-files should be used for both functions. The stable
+% option only works in the M-file implementation/
+% 
+% The MEX-implementation of <dmodpo.html |dmodpo|> uses the |IB01BD|
+% function from the SLICOT library.
+% 
+% The MEX-implementation may generate the following warning:
+%
+% |Warning: Covariance matrices are too small: returning K=0|
+%
+% This implies that there is not enough information available to reliably
+% estimate a Kalman gain. _K_ = _0_ is returned for stability reasons in
+% this case.
+
+%% Algorithm
+% The data matrix obtained with <dordpi.html |dordpi|> contains the
+% weighted left singular vectors of the _R32_ matrix. The first _n_ of
+% these vectors form an estimate _Os_ of the system's extended
+% observability matrix:
+%%
+% <<extobs.jpg>>
+%%
+% The estimates |Ahat| and |Chat| are obtained by linear regression:
+%
+% $$ \hat{C} = \hat{\mathcal{O}}_s(1:\ell,:) $$
+%
+% $$ \hat{A} = \hat{\mathcal{O}}_s(1:(s-1)\ell,:)^\dagger
+% \hat{\mathcal{O}}_s(\ell+1:s\ell,:) $$
+%
+% The optional Kalman gain is aclculated based on estimated noise
+% covariance matrices [1].
+
+%% Used By
+% This a top-level function that is used directly by the user.
+
+%% See Also
+% <dordpo.html |dordpo|>, <dordpi.html |dordpi|>, <dmodpi.html |dmodpi|>,
+% <dordrs.html |dordrs|>, <dmodrs.html |dmodrs|>,
+
+%% References
+% [1] M. Verheagen, "Identification of the deterministic part of MIMO
+% state space models given in innovations form from input-output data",
+% _Automatica_, vol. 30, no. 1, pp. 61-74, 1994.
+%
+% [2] J.M. Maciejowski, "Guaranteed Stability with Subspace Methods",
+% Submitted to Systems and Control Letters, 1994.
+##### SOURCE END #####
+--></body></html>

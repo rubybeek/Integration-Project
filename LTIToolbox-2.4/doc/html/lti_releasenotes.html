@@ -1,0 +1,126 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>lti_releasenotes</title><meta name="generator" content="MATLAB 8.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-11-09"><meta name="DC.source" content="lti_releasenotes.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Release Notes</a></li><li><a href="#2">LTI System Identification Toolbox</a></li><li><a href="#3">State space Model Identification (SMI) Toolbox.</a></li></ul></div><h2>Release Notes<a name="1"></a></h2><h2>LTI System Identification Toolbox<a name="2"></a></h2><p>V2.4 (November 2012)</p><div><ul><li>compatibility update for MEX file compilation under MATLAB R2012b</li></ul></div><p>V2.3 (November 2011)</p><div><ul><li>compatibility update for MATLAB R2011b onwards</li></ul></div><p>V2.2 (July 2010)</p><div><ul><li>automated mex file generation using <tt>ltisetup</tt></li><li>add option to estimate stable A matrix in <tt>dmodpo</tt> and <tt>dmodpi</tt></li><li>add <tt>dmodpi4</tt> and <tt>dmodpo4</tt> where A and C are found via MOESP, B and D via N4SID</li></ul></div><p>V2.1 (July 2009)</p><div><ul><li>add the work of C.T. Chou, R. Hallouzi, and K. Hinnen</li><li>new mex-binaries for windows (compiled on Vista/Matlab2008b)</li></ul></div><p>V2.02 (April 2008)</p><div><ul><li>fixed handling of empty inputs in <tt>dordpo</tt> and <tt>dmodpo</tt></li></ul></div><p>V2.01 (January 2008)</p><div><ul><li>fixed bug in <tt>fac2bd</tt></li><li>fixed bug calling <tt>dac2bdc</tt></li><li>new mex-binaries for windows (compiled on XP/Matlab2007b)</li></ul></div><p>V2.0 (August 2007)</p><div><ul><li>new help interface</li><li>removed depreciated SMI v1.0 functions (see below)</li><li>removed LPV functions (becomes a seperate LPV Toolbox)</li><li>changed <tt>lpvitr</tt> to <tt>ltiitr</tt> (removed LPV functionality)</li><li>renamed <tt>example</tt> to <tt>ltidemo</tt></li><li>new function <tt>gbn</tt> (based on <tt>prbn</tt>)</li><li>add check arguments to MEX-files and M-files</li><li>corrected a lot of M-Lint messages</li><li>new mex-binaries for windows (compiled on XP/Matlab2006b)</li><li>new mex-binaries for linux (compiled on FEDORACORE6/Matlab2006b)</li></ul></div><p>Previous versions of the LTI System Identification Toolbox are v1.5, v1.0 and v0.9 (April 2002). Release notes of these previous versions are not available.</p><h2>State space Model Identification (SMI) Toolbox.<a name="3"></a></h2><p>The toolbox software is based partly on the SMI Toolbox v1.0e (August 1999), and forms a superset of most of its functionality, see the companion (software manual).</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2012b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+%% Release Notes
+%
+%% LTI System Identification Toolbox
+%
+% V2.4 (November 2012)
+%
+% * compatibility update for MEX file compilation under MATLAB R2012b
+%
+% V2.3 (November 2011)
+%
+% * compatibility update for MATLAB R2011b onwards
+%
+% V2.2 (July 2010)
+%
+% * automated mex file generation using |ltisetup|
+% * add option to estimate stable A matrix in |dmodpo| and |dmodpi|
+% * add |dmodpi4| and |dmodpo4| where A and C are found via MOESP, B and D via N4SID
+%
+% V2.1 (July 2009)
+%
+% * add the work of C.T. Chou, R. Hallouzi, and K. Hinnen
+% * new mex-binaries for windows (compiled on Vista/Matlab2008b)
+%
+% V2.02 (April 2008)
+%
+% * fixed handling of empty inputs in |dordpo| and |dmodpo|
+%
+% V2.01 (January 2008)
+%
+% * fixed bug in |fac2bd|
+% * fixed bug calling |dac2bdc|
+% * new mex-binaries for windows (compiled on XP/Matlab2007b)
+%
+% V2.0 (August 2007)
+%
+% * new help interface
+% * removed depreciated SMI v1.0 functions (see below)
+% * removed LPV functions (becomes a seperate LPV Toolbox)
+% * changed |lpvitr| to |ltiitr| (removed LPV functionality)
+% * renamed |example| to |ltidemo|
+% * new function |gbn| (based on |prbn|)
+% * add check arguments to MEX-files and M-files
+% * corrected a lot of M-Lint messages
+% * new mex-binaries for windows (compiled on XP/Matlab2006b)
+% * new mex-binaries for linux (compiled on FEDORACORE6/Matlab2006b)
+%
+% Previous versions of the LTI System Identification Toolbox are v1.5, v1.0
+% and v0.9 (April 2002). Release notes of these previous versions are not available. 
+%
+%
+%% State space Model Identification (SMI) Toolbox.
+% The toolbox software is based partly on the SMI Toolbox v1.0e 
+% (August 1999), and forms a superset of most of its functionality, see the
+% companion (software manual).
+##### SOURCE END #####
+--></body></html>

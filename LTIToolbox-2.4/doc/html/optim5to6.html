@@ -1,0 +1,117 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>optim5to6</title><meta name="generator" content="MATLAB 8.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-11-09"><meta name="DC.source" content="optim5to6.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">OPTIM5TO6</a></li><li><a href="#2">Syntax</a></li><li><a href="#3">Description</a></li><li><a href="#4">Inputs</a></li><li><a href="#5">Outputs</a></li><li><a href="#6">Remarks</a></li><li><a href="#7">Used By</a></li><li><a href="#8">See Also</a></li></ul></div><h2>OPTIM5TO6<a name="1"></a></h2><p>Translates a <tt>foptions</tt>-vector into an <tt>optimset</tt>-structure.</p><h2>Syntax<a name="2"></a></h2><p><tt>options = optim5to6(fopts)</tt></p><h2>Description<a name="3"></a></h2><p>This function translates a MATLAB 5 optimization options vector ---as generated using <tt>foptions</tt> --- into a MATLAB 6 compatible <tt>optimset</tt>-structure. Translated fields are:</p><div><ul><li><b>1</b> Display</li><li><b>2</b> TolX</li><li><b>3</b> TolFun</li><li><b>9</b> Jacobian</li><li><b>14</b> MaxFunEval</li></ul></div><h2>Inputs<a name="4"></a></h2><p><tt>fopts</tt> is a MATLAB 5 compatible <tt>foptions</tt>-vector</p><h2>Outputs<a name="5"></a></h2><p><tt>options</tt> is a MATLAB 6 compatible <tt>optimset</tt>-structure</p><h2>Remarks<a name="6"></a></h2><p>MATLAB 5 uses a default parameter and function tolerance of <tt>1e-4</tt>. This is indicated by the second and third element of <tt>fopts</tt>, that are <tt>1e-4</tt> in the default case.</p><p>MATLAB 6 uses a default value of <tt>1e-6</tt> for both tolerances, but setting the tolerances to <tt>1e-6</tt> if the <tt>fopts</tt> vector contains the default values is impossible: there is no way of telling whether the user used the default values or that he actually specified <tt>1e-4</tt> as tolerance.</p><p>Consequently, the tolerances are copied verbatim, <i>and there will thus be different results in an optimization when using a default <tt>foptions</tt>-vector or a default <tt>optimset</tt>-structure</i>.</p><h2>Used By<a name="7"></a></h2><p><a href="mkoptstruc.html"><tt>mkoptstruc</tt></a></p><h2>See Also<a name="8"></a></h2><p><tt>foptions</tt>, <tt>optimset</tt>, <a href="mkoptstruc.html"><tt>mkoptstruc</tt></a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2012b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+%% OPTIM5TO6
+% Translates a |foptions|-vector into an |optimset|-structure.
+
+%% Syntax
+% |options = optim5to6(fopts)|
+
+%% Description
+% This function translates a MATLAB 5 optimization options vector REPLACE_WITH_DASH_DASH-as
+% generated using |foptions| REPLACE_WITH_DASH_DASH- into a MATLAB 6 compatible
+% |optimset|-structure. Translated fields are:
+% 
+% * *1* Display
+% * *2* TolX
+% * *3* TolFun
+% * *9* Jacobian
+% * *14* MaxFunEval
+%
+
+%% Inputs
+% |fopts| is a MATLAB 5 compatible |foptions|-vector
+         
+%% Outputs
+% |options| is a MATLAB 6 compatible |optimset|-structure
+
+%% Remarks
+% MATLAB 5 uses a default parameter and function tolerance of |1e-4|. This
+% is indicated by the second and third element of |fopts|, that are |1e-4|
+% in the default case.
+% 
+% MATLAB 6 uses a default value of |1e-6| for both tolerances, but setting
+% the tolerances to |1e-6| if the |fopts| vector contains the default
+% values is impossible: there is no way of telling whether the user used
+% the default values or that he actually specified |1e-4| as tolerance.
+% 
+% Consequently, the tolerances are copied verbatim, _and there will thus be
+% different results in an optimization when using a default
+% |foptions|-vector or a default |optimset|-structure_.
+
+%% Used By
+% <mkoptstruc.html |mkoptstruc|>
+
+%% See Also
+% |foptions|, |optimset|, <mkoptstruc.html |mkoptstruc|>
+
+
+##### SOURCE END #####
+--></body></html>

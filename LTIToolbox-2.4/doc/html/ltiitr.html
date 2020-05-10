@@ -1,0 +1,117 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ltiitr</title><meta name="generator" content="MATLAB 8.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-11-09"><meta name="DC.source" content="ltiitr.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">LTIITR</a></li><li><a href="#2">Syntax</a></li><li><a href="#3">Description</a></li><li><a href="#4">Inputs</a></li><li><a href="#9">Outputs</a></li><li><a href="#10">Algorithm</a></li><li><a href="#11">Used By</a></li><li><a href="#12">See Also</a></li></ul></div><h2>LTIITR<a name="1"></a></h2><p>Calculates an LTI state-trajectory</p><h2>Syntax<a name="2"></a></h2><p><tt>x = ltiitr(A,B,u,w,x0)</tt></p><h2>Description<a name="3"></a></h2><p>In its most general setting, this function iterates the state equation of an linear time-inavriant (LTI) system. It computes the state <i>x(k)</i> for <i>k</i> = <i>1,2,...,N</i> satisfying the LTI state equation:</p><p><img src="ltiitr_eq15163.png" alt="$$ x(k+1) = Ax(k) + Bx(k) + w(k) $$"></p><p>This function is used internally by <a href="dfunlti.html"><tt>dfunlti</tt></a>, <a href="dac2b.html"><tt>dac2b</tt></a>, <a href="dac2bd.html"><tt>dac2bd</tt></a>, <a href="dinit.html"><tt>dinit</tt></a> and <a href="dltisim.html"><tt>dltisim</tt></a>. It is not meant for stand-alone use.</p><h2>Inputs<a name="4"></a></h2><p><tt>A</tt> is an LTI state-transition matrix of size <i>n</i> x <i>n</i></p><p><tt>B</tt> is an LTI input matrix of size <i>n</i> x <i>m</i>.</p><p><tt>u</tt> is a <i>N</i> x <i>m</i> matrix containing <i>N</i> samples of the <i>m</i> inputs.</p><p><tt>w</tt> is a (optional) <i>N</i> x <i>n</i> matrix containing the process noise.</p><p><tt>x0</tt> is the (optional) initial state, an <i>n</i> x <i>1</i> vector.</p><h2>Outputs<a name="9"></a></h2><p><tt>x</tt> is the computed state, an <i>N</i> x <i>n</i> matrix.</p><h2>Algorithm<a name="10"></a></h2><p>A direct iteration of the system's state-transition equation is used to obtain the state-trajectory for all time-instants.</p><h2>Used By<a name="11"></a></h2><p><a href="dfunlti.html"><tt>dfunlti</tt></a>, <a href="dac2b.html"><tt>dac2b</tt></a>, <a href="dac2bd.html"><tt>dac2bd</tt></a>, <a href="dinit.html"><tt>dinit</tt></a>, <a href="dltisim.html"><tt>dltisim</tt></a></p><h2>See Also<a name="12"></a></h2><p><a href="dfunlti.html"><tt>dfunlti</tt></a>, <a href="dac2b.html"><tt>dac2b</tt></a>, <a href="dac2bd.html"><tt>dac2bd</tt></a>, <a href="dinit.html"><tt>dinit</tt></a>, <a href="dltisim.html"><tt>dltisim</tt></a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2012b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+%% LTIITR
+% Calculates an LTI state-trajectory
+
+%% Syntax
+% |x = ltiitr(A,B,u,w,x0)|
+
+%% Description
+% In its most general setting, this function iterates the state equation of
+% an linear time-inavriant (LTI) system. It computes the state _x(k)_ for
+% _k_ = _1,2,...,N_ satisfying the LTI state equation:
+% 
+% $$ x(k+1) = Ax(k) + Bx(k) + w(k) $$
+% 
+% This function is used internally by <dfunlti.html |dfunlti|>, <dac2b.html
+% |dac2b|>, <dac2bd.html |dac2bd|>, <dinit.html |dinit|> and <dltisim.html
+% |dltisim|>. It is not meant for stand-alone use.
+
+%% Inputs
+% |A| is an LTI state-transition matrix of size _n_ x _n_
+%% 
+% |B| is an LTI input matrix of size _n_ x _m_.
+%% 
+% |u| is a _N_ x _m_ matrix containing _N_ samples of the _m_ inputs.
+%% 
+% |w| is a (optional) _N_ x _n_ matrix containing the process noise.
+%% 
+% |x0| is the (optional) initial state, an _n_ x _1_ vector.
+          
+%% Outputs
+% |x| is the computed state, an _N_ x _n_ matrix.
+
+%% Algorithm
+% A direct iteration of the system's state-transition equation is used to
+% obtain the state-trajectory for all time-instants.
+
+%% Used By
+% <dfunlti.html |dfunlti|>, <dac2b.html |dac2b|>, <dac2bd.html |dac2bd|>,
+% <dinit.html |dinit|>, <dltisim.html |dltisim|>
+
+%% See Also
+% <dfunlti.html |dfunlti|>, <dac2b.html |dac2b|>, <dac2bd.html |dac2bd|>,
+% <dinit.html |dinit|>, <dltisim.html |dltisim|>
+
+
+
+##### SOURCE END #####
+--></body></html>

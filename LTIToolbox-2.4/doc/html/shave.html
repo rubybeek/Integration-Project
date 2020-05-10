@@ -1,0 +1,129 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>shave</title><meta name="generator" content="MATLAB 8.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-11-09"><meta name="DC.source" content="shave.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">SHAVE</a></li><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#6">Inputs</a></li><li><a href="#7">Outputs</a></li><li><a href="#8">Algorithm</a></li><li><a href="#9">Used By</a></li><li><a href="#10">References</a></li></ul></div><h2>SHAVE<a name="1"></a></h2><p>Reduces spikes in measured signals.</p><h2>Syntax<a name="2"></a></h2><p><tt>shave(x)</tt></p><p><tt>y = shave(x)</tt></p><p><tt>y = shave(x,factor,Wn,lolim,uplim)</tt></p><h2>Description<a name="5"></a></h2><p>This function is used for reducing spikes in a measured signal. The spikes are shaved using the method in [1].</p><p>If no output argument is specified, a figure containing the original signal and shaved signal is drawn. The figure also contains the band (see "Algorithm" below). Detected spikes are indicated with crosses.</p><h2>Inputs<a name="6"></a></h2><p><tt>x</tt> is the signal to be shaved.</p><p><tt>factor</tt> is the (optional) multiplication factor which determines the width of the detection band. When the detection is poor, this factor should be changed. The default value is <tt>2</tt>.</p><p><tt>Wn</tt> is the (optional) cut-off frequency of the low-pass filter used for trend determination.  It must be in the range <tt>0.0 &lt; Wn &lt; 1.0</tt>, with <tt>1.0</tt> corresponding to half the sample rate. Its default value is <tt>0.01</tt>.</p><p><tt>lolim,uplim</tt> (optional) The signal <tt>x</tt> will be clipped to the band <tt>[lolim,up_lim]</tt> before the shaving starts.</p><h2>Outputs<a name="7"></a></h2><p><tt>y</tt> is the shaved signal.</p><h2>Algorithm<a name="8"></a></h2><p>The spike removal algorithm developed in [1] is used. This algorithm can be summarized as follows:</p><div><ul><li>The trend in the signal <tt>x</tt> is calculated using a fourth-order Butterworth filter.</li><li>The standard deviation of the trend-corrected, clipped signal is calculated.</li><li>The detection band is defined by the signal trend plus and minus a certain factor times the standard deviation. All samples outside this band are regarded as spikes, and are replaced using linear interpolation.</li></ul></div><h2>Used By<a name="9"></a></h2><p>This is a top-level function that is used directly by the user.</p><h2>References<a name="10"></a></h2><p>[1] A. Backx, <i>Identification of an Industrial Process: A Markov Parameter Approach</i>. PhD thesis, University of Eindhoven, Eindhoven, The Netherlands, 1987.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2012b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+%% SHAVE
+% Reduces spikes in measured signals.
+
+%% Syntax
+% |shave(x)|
+%%
+% |y = shave(x)|
+%%
+% |y = shave(x,factor,Wn,lolim,uplim)|
+
+%% Description
+% This function is used for reducing spikes in a measured signal. The
+% spikes are shaved using the method in [1].
+% 
+% If no output argument is specified, a figure containing the original
+% signal and shaved signal is drawn. The figure also contains the band (see
+% "Algorithm" below). Detected spikes are indicated with crosses.
+
+%% Inputs
+% |x| is the signal to be shaved.
+% 
+% |factor| is the (optional) multiplication factor which determines the
+% width of the detection band. When the detection is poor, this factor
+% should be changed. The default value is |2|.
+% 
+% |Wn| is the (optional) cut-off frequency of the low-pass filter used for
+% trend determination.  It must be in the range |0.0 < Wn < 1.0|, with
+% |1.0| corresponding to half the sample rate. Its default value is |0.01|.
+% 
+% |lolim,uplim| (optional) The signal |x| will be clipped to the band
+% |[lolim,up_lim]| before the shaving starts.
+         
+%% Outputs
+% |y| is the shaved signal.
+
+%% Algorithm
+% The spike removal algorithm developed in [1] is used. This algorithm can
+% be summarized as follows:
+% 
+% * The trend in the signal |x| is calculated using a fourth-order
+% Butterworth filter.
+% * The standard deviation of the trend-corrected, clipped signal is
+% calculated.
+% * The detection band is defined by the signal trend plus and minus a
+% certain factor times the standard deviation. All samples outside this
+% band are regarded as spikes, and are replaced using linear interpolation.
+%
+
+%% Used By
+% This is a top-level function that is used directly by the user.
+
+%% References
+% [1] A. Backx, _Identification of an Industrial Process: A Markov
+% Parameter Approach_. PhD thesis, University of Eindhoven, Eindhoven, The
+% Netherlands, 1987.
+
+
+##### SOURCE END #####
+--></body></html>
