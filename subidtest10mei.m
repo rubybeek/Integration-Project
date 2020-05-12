@@ -5,10 +5,6 @@ dataset = iddata(data(:,1:2),data(:,3:4),1);
 dataset.InputName  = {'Input Sensor 1';'Input Sensor 2'};
 dataset.OutputName = {'Output Sensor 1';'Output Sensor 2'};
 
-
-
-
-
 %%
 
 % Subspace identification
