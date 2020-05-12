@@ -56,7 +56,7 @@ sysc = d2c(sysd);
 
 figure(2)
 compare(dataset,sysd);
-title('Subspace identification using own script')
+title('Subspace identification using RQ Factorization')
 
 %% Subspace identification using ssest
 MIMO = ssest(dataset,2);
