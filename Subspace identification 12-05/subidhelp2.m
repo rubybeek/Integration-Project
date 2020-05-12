@@ -19,10 +19,10 @@ for k = 1:N
     
         for tau = 0:(k-1)
  
-            Phi_2 = Phi_2 + kron(u(tau+1,:)',Ct*(At^(k-tau-1)));
+            Phi_2 = Phi_2 + kron(u((2*tau+1):(2*tau+2),:)',Ct*(At^(k-tau-1)));
         end
         
-        Phi_3 = kron(u(k,:)',eye(L));
+        Phi_3 = kron(u((2*k-1):(2*k),:)',eye(L));
 
         Phi_N(1 + ks*(k-1):ks*k,:) = [Phi_1 Phi_2 Phi_3];
 end
