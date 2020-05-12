@@ -1,0 +1,35 @@
+clear all 
+close all
+
+load('data.1.mat')
+
+yold = data(:,1:2);
+uold = data(:,3:4);
+N = length(y);
+
+y = zeros(2*399,1);
+u = zeros(2*399,1);
+
+s = n*4;
+ 
+for i = 1:N
+    y(2*i-1:2*i) = yold(i,:)';
+    u(2*i-1:2*i) = uold(i,:)';
+end
+
+for i = 1:N-s
+   Y( 
+end
+
+
+%%
+% n = 2;
+% s = n*4;
+% 
+% 
+% for i = 1:N-s
+%     Y =
+%     U =
+% end
+% 
+% [At, Bt, Ct, Dt, x0t, S] = mysubid(y,u,s,n);
