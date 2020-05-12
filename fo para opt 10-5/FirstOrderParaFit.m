@@ -13,11 +13,15 @@ delimiterIn = ',';
 headerlinesIn = 1;
 z = importdata(filename,delimiterIn,headerlinesIn);
 % extract data columns
+datasmooth = smoothdata(z(:,2:3),'sgolay',60);
+
 t = z(:,1);
 Q1 = z(:,4);
 Q2 = z(:,5);
-T1meas = z(:,2);
-T2meas = z(:,3);
+% T1meas = z(:,2);
+% T2meas = z(:,3);
+T1meas = datasmooth(:,1);
+T2meas = datasmooth(:,2);
 
 % number of time points
 ns = length(t);
