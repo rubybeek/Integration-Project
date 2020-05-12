@@ -1,4 +1,4 @@
-function [At, Bt, Ct, Dt, x0t, S] = mysubid(y,u,s,n)
+function [At, Bt, Ct, Dt, x0t, S, theta, Phi_N] = mysubid(y,u,s,n,yold)
 
 if n>=s
     disp('s is not chosen bigger than n');
@@ -32,5 +32,5 @@ At = pinv(uu((1:(s-1)*2),1:n)) * uu(3:2*s,1:n);
 % Bt=1;
 % Dt=1;
 % x0t=1;
-[Bt,Dt,x0t]=subidhelp(y,u,At,Ct);
+[Bt,Dt,x0t,theta,Phi_N]=subidhelp2(y,u,At,Ct,N,n,yold);
 end

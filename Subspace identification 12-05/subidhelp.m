@@ -39,9 +39,9 @@ function [Bt,Dt,x0t]=subidhelp(y,u,At,Ct)
 
   PSI=[];
   for k=0:nmax-1
-    LL=zeros(1,n);
+    LL=zeros(2,2);
     for tau=0:k-1
-        LL=LL+u(tau+1)*Ct*At^(k-1-tau);
+        LL=LL+u(,tau+1)*Ct*At^(k-1-tau);
     end
     PSI=[PSI; Ct*At^k LL u(k+1)'];
   end
