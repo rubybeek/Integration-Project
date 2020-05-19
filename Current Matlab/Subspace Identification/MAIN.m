@@ -2,7 +2,7 @@ clear all
 close all
 clearvars
 
-load('data.2.mat')
+load('data2.mat')
 data = data2;
 %load('data.1.mat')
 

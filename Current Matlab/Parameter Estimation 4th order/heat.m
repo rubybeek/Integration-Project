@@ -28,6 +28,8 @@ function dTdt = heat(t,x,Q1,Q2,p)
     % Heat Transfer Exchange Between 1 and 2
     conv12 = Us*As*(T2-T1);
     rad12  = eps*sigma*As * (T2^4 - T1^4);
+    
+   % Ta = 273.15;
 
     % Nonlinear Energy Balances
     dT1dt = (1.0/(m*Cp))*(U*A*(Ta-T1) ...
