@@ -5,10 +5,7 @@ clearvars
 load('data.2.mat')
 data = data2;
 %load('data.1.mat')
-
-%% preprocessing 
-Tamb = min(data(1,1),data(1,2));
-data(:,1:2) = data(:,1:2) - Tamb;
+Tamb = min(data(1,1
 
 %% Smoothdata optional
 % datasmooth = smoothdata(data(:,1:2),'sgolay',60);
@@ -49,7 +46,13 @@ for i = 1:N
     u(2*i-1:2*i) = uold(i,:)';
 end
 
-%% Subspace identificaton using Filtering book / RQ factorization
+%%
+%Y = zeros(2*s,N-s); 
+% for i = 1:N-s+1
+%    Y(:,i) = y(2*i-1 : 2*s -2 + 2*i); 
+%    U(:,i) = u(2*i-1 : 2*s -2 + 2*i); 
+% end
+
 [At, Bt, Ct, Dt, x0t, S, theta,Phi_N] = mysubid(y,u,s,n,yold,N);
 
 Ts = 1;

@@ -1,10 +1,10 @@
-function [At, Bt, Ct, Dt, x0t, S, theta, Phi_N] = mysubid(y,u,s,n,yold)
+function [At, Bt, Ct, Dt, x0t, S, theta, Phi_N] = mysubid(y,u,s,n,yold,N)
 
 if n>=s
     disp('s is not chosen bigger than n');
 end
 
-N=399; %length(y/2);
+%N=399; %length(y/2);
 
 % Y = hankel(y(1:s),y(s:N));
 % U = hankel(u(1:s),u(s:N));
