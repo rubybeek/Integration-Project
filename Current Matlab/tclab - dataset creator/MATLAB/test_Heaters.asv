@@ -86,7 +86,7 @@ for i = 1:1199
     n = length(t1s);
     time = linspace(0,n+1,n);
     
-    clf
+    %clf
     subplot(2,1,1)
     plot(time,t1s,'b.','MarkerSize',10);
     hold on
