@@ -33,7 +33,7 @@ N = length(yold);
 y = zeros(2*399,1);
 u = zeros(2*399,1);
 
-n = 2;
+n = 4;
 s = n*4;
  
 for i = 1:N
@@ -59,14 +59,14 @@ compare(dataset,sysd);
 title('Subspace identification using RQ Factorization')
 
 %% Subspace identification using ssest
-MIMO = ssest(dataset,2);
+MIMO = ssest(dataset,4);
 
 figure(3)
 compare(dataset,MIMO);
 title('Subspace identification using ssest')
 
 %% Subspace identification using N4SID
-MIMO2 = n4sid(dataset,2);
+MIMO2 = n4sid(dataset,4);
 
 figure(4)
 compare(dataset,MIMO2);
