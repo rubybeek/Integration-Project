@@ -59,12 +59,17 @@ pzmap(lin_discrete)
 figure(3)
 pzmap(lin_statespace)
 
-K = place(Ac,Bc,[-5+3*j -5-3*j -10 -15]);
-
-closedloop_cont = feedback(G,K);
-
-figure(4)
-step(closedloop_cont)
+p = pole(lin_statespace);
+%K = place(Ac,Bc,[-5+3*j -5-3*j -10 -15]);
+K = place(Ac,Bc,p)
+%closedloop_cont = feedback(G,K);
+sys = ss(Ac-Bc*K,Bc,Cc,Dc);
+[num,den] = ss2tf(Ac-Bc*K,Bc,Cc,Dc,1);
+%G = tf(num,den)
+MIMO = tf(sys(1:2,1:2));
+% 
+% figure(4)
+% step(closedloop_cont)
 
 
 

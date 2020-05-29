@@ -21,7 +21,7 @@ for i = 1:3599
     tic;
     if i==10
         disp('Turn on heater 1')
-        ht1 = 30;
+        ht1 = 120;
         h1(ht1);
         h2(ht2);
     end

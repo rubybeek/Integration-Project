@@ -11,7 +11,7 @@ Bm = zeros(4,2);
 Cm = zeros(2,4);
 Dm = zeros(2,2);
 
-T0 = 273.15+19;
+T0 = 273.15+20;
 %T0 = 273.15+30;
 c1 = U*A;
 c2 = 4*eps*sigma*A*T0^3;
@@ -65,7 +65,7 @@ plot(t,(y(:,2)))
 
 lin_discrete = c2d(lin_statespace,Ts);
 
-save('MIMO_para2','lin_statespace','lin_discrete')
+%save('MIMO_para','lin_statespace','lin_discrete')
 
 
 
