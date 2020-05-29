@@ -57,11 +57,11 @@ for i = 1:3599
     end
     if i==1300
         disp('Turn on heater 2')
-        ht2 = 10;
+        ht2 = 80;
         h1(ht1);
         h2(ht2);
     end
-    if i==1800
+  if i==1800
         disp('Turn on heater 1 & 2')
         ht1 = 40;
         ht2 = 40;
@@ -70,40 +70,39 @@ for i = 1:3599
     end
     if i==2100
         disp('Turn on heater 1 & 2')
-        ht1 = 15;
-        ht2 = 40;
+        ht1 = 60;
+        ht2 = 80;
         h1(ht1);
         h2(ht2);
     end
      if i==2400
         disp('Turn on heater 1 & 2')
         ht1 = 0;
-        ht2 = 20;
+        ht2 = 100;
         h1(ht1);
         h2(ht2);
      end
      if i==2800
         disp('Turn on heater 1')
-        ht1 = 80;
+        ht1 = 100;
         h1(ht1);
         h2(ht2);
      end
-     if i==2900
+      if i==2900
         disp('Turn on heater 2')
-        ht1 = 15;
         ht2 = 50;
         h1(ht1);
         h2(ht2);
-     end
-     if i==3100
+      end
+    if i==3100
         disp('Turn on heater 1')
-        ht1 = 40;
+        ht1 = 50;
         h1(ht1);
         h2(ht2);
     end
     if i==3200
         disp('Turn on heater 2')
-        ht2 = 50;
+        ht2 = 100;
         h1(ht1);
         h2(ht2);
     end
