@@ -1,8 +1,7 @@
 clearvars
 close all
 
-load('Linearization ss model discrete.mat');
-load('Linearization ss model continuous.mat');
+load('MIMO_para.mat')
 
 Ad = lin_discrete.A;
 Bd = lin_discrete.B;
@@ -27,49 +26,56 @@ else
 end
 
 
-%% Pole-placement
+%%
 
-% Check open loop poles
+%P = [pole(lin_statespace)]';
+P = [-0.0626 -.0626 -0.009 -0.027];
+K = place(Ac,Bc,P);
+% Q = eye(min(size(Ac)));
 
-P_OL = pole(lin_statespace);
+newsys = ss(Ac-Bc*K,Bc,Cc,Dc);
 
-% Make closed loop
+MIMO = tf(newsys(1:2,1:2));
+
 figure(1)
-step(lin_statespace)
+step(MIMO)
 
-% Solve for gain
-Kdc = dcgain(lin_statespace);
+% figure(2)
+% step(lin_statespace)
+
+Kdc = dcgain(MIMO);
 Kr = inv(Kdc);
 
-% Create scaled input CL system
-syscl_scaled = ss(Ac,Bc*Kr,Cc,Dc);
+MIMO_scaled = ss(Ac-Bc*K,Bc*Kr,Cc,Dc);
 
-figure(2)
-step(syscl_scaled)
+figure(3)
+step(MIMO_scaled)
 
+%% design observer 
+
+[Kest,L,P2] = kalman(MIMO_scaled,[],[],[]);
+
+Ts = 10;
+kalmansys_discr = c2d(Kest,Ts);
+MIMO_scaleddiscr = c2d(MIMO_scaled,Ts);
+figure(4)
+bode(MIMO_scaled)
+
+figure(5)
+bode(lin_statespace)
+
+figure(6)
+step(MIMO_scaleddiscr)
 
 %%
 
-figure(1)
-step(lin_discrete)
+Tamb = 21;
+initial_state = [T1C()-Tamb T2C()-Tamb T1C()-Tamb T2C()-Tamb];
 
-figure(2)
-pzmap(lin_discrete)
-
-figure(3)
-pzmap(lin_statespace)
-
-p = pole(lin_statespace);
-%K = place(Ac,Bc,[-5+3*j -5-3*j -10 -15]);
-K = place(Ac,Bc,p)
-%closedloop_cont = feedback(G,K);
-sys = ss(Ac-Bc*K,Bc,Cc,Dc);
-[num,den] = ss2tf(Ac-Bc*K,Bc,Cc,Dc,1);
-%G = tf(num,den)
-MIMO = tf(sys(1:2,1:2));
-% 
-% figure(4)
-% step(closedloop_cont)
+for i = 1:50
+    
+    
+end
 
 
 
