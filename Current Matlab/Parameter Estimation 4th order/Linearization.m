@@ -1,6 +1,6 @@
 load('coefficients.mat')
-load('parameters.mat')
-load('data2.mat')
+load('parameters2.mat')
+load('data3.mat')
 
 Tamb = min(data(1,2),data(1,3));
 data(:,2:3) = data(:,2:3) - Tamb;
@@ -62,6 +62,8 @@ plot(t,(y(:,2)))
 % temp needs to be used... 
 
 lin_discrete = c2d(lin_statespace,Ts);
+
+%save('MIMO_para','lin_statespace','lin_discrete')
 
 
 

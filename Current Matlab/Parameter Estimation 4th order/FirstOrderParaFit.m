@@ -9,7 +9,7 @@ global t T1meas T2meas Q1 Q2
 % Column 2 = input (u)
 % Column 3 = output (yp)
 %filename = 'data.mat';
-filename = 'data2.mat';
+filename = 'data3.mat';
 delimiterIn = ',';
 headerlinesIn = 1;
 z = importdata(filename,delimiterIn,headerlinesIn);
@@ -102,3 +102,5 @@ ylabel('Heater Output')
 legend('Q_1','Q_2')
 
 xlabel('Time (min)')
+
+%save('parameters3','U','Us','alpha1','alpha2','tau')
