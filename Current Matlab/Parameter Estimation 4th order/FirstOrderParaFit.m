@@ -9,7 +9,7 @@ global t T1meas T2meas Q1 Q2
 % Column 2 = input (u)
 % Column 3 = output (yp)
 %filename = 'data.mat';
-filename = 'data2.mat';
+filename = 'data3.mat';
 delimiterIn = ',';
 headerlinesIn = 1;
 z = importdata(filename,delimiterIn,headerlinesIn);

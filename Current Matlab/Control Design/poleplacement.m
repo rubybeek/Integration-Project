@@ -41,6 +41,12 @@ step(lin_statespace)
 Kdc = dcgain(lin_statespace);
 Kr = inv(Kdc);
 
+% Create scaled input CL system
+syscl_scaled = ss(Ac,Bc*Kr,Cc,Dc);
+
+figure(2)
+step(syscl_scaled)
+
 
 %%
 
