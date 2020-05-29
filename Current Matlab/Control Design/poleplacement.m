@@ -1,7 +1,7 @@
 clearvars
 close all
 
-load('MIMO_para.mat')
+load('MIMO_para2.mat')
 
 Ad = lin_discrete.A;
 Bd = lin_discrete.B;
@@ -31,7 +31,6 @@ end
 %P = [pole(lin_statespace)]';
 P = [-0.0626 -.0626 -0.009 -0.027];
 K = place(Ac,Bc,P);
-% Q = eye(min(size(Ac)));
 
 newsys = ss(Ac-Bc*K,Bc,Cc,Dc);
 
@@ -56,8 +55,11 @@ step(MIMO_scaled)
 [Kest,L,P2] = kalman(MIMO_scaled,[],[],[]);
 
 Ts = 10;
+
 kalmansys_discr = c2d(Kest,Ts);
+
 MIMO_scaleddiscr = c2d(MIMO_scaled,Ts);
+
 figure(4)
 bode(MIMO_scaled)
 
@@ -69,13 +71,21 @@ step(MIMO_scaleddiscr)
 
 %%
 
+Ad_sc = MIMO_scaleddiscr.A
 Tamb = 21;
+R
+tclab;
 initial_state = [T1C()-Tamb T2C()-Tamb T1C()-Tamb T2C()-Tamb];
 
-for i = 1:50
-    
-    
-end
+ht1 = 0;
+ht2 = 0;
+initial_input = [h1(ht1) h2(ht2)];
+
+% for i = 1:50  %50 x 10 sec
+%     
+%     x(i+1) = A
+%     
+% end
 
 
 

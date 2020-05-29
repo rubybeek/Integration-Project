@@ -1,7 +1,7 @@
 clearvars
 close all
 
-load('MIMO_para.mat')
+load('MIMO_para2.mat')
 
 Ad = lin_discrete.A;
 Bd = lin_discrete.B;
@@ -55,59 +55,38 @@ step(MIMO_scaled)
 
 [Kest,L,P2] = kalman(MIMO_scaled,[],[],[]);
 
-kalmansys_discr = c2d(Kest,1);
+Ts = 10;
+
+kalmansys_discr = c2d(Kest,Ts);
+
+MIMO_scaleddiscr = c2d(MIMO_scaled,Ts);
+
 figure(4)
 bode(MIMO_scaled)
 
 figure(5)
 bode(lin_statespace)
 
-
+figure(6)
+step(MIMO_scaleddiscr)
 
 %%
 
-figure(1)
-pzmap(lin_discrete)
+Ad_sc = MIMO_scaleddiscr.A
+Tamb = 21;
+R
+tclab;
+initial_state = [T1C()-Tamb T2C()-Tamb T1C()-Tamb T2C()-Tamb];
 
-figure(2)
-pzmap(lin_statespace)
+ht1 = 0;
+ht2 = 0;
+initial_input = [h1(ht1) h2(ht2)];
 
-figure(3)
-step(lin_statespace)
-
-P = [pole(lin_statespace)]';
-K = place(Ac,Bc,P);
-
-G = tf(lin_statespace);
-H = feedback(G,K);
-
-%Acl = Ac - Bc*K;
-%syscl = ss(Acl,Bc,Cc,Dc);
-
-figure(4)
-bode(lin_statespace)
-
-
-
-%% Pole-placement
-
-% Check open loop poles
-
-P_OL = pole(lin_statespace);
-
-% Make closed loop
-figure(4)
-step(lin_statespace)
-
-% Solve for gain
-Kdc = dcgain(lin_statespace);
-Kr = inv(Kdc);
-
-% Create scaled input CL system
-syscl_scaled = ss(Ac,Bc*Kr,Cc,Dc);
-
-figure(5)
-step(syscl_scaled)
+for i = 1:50  %50 x 10 sec
+    
+    x(i+1) = A
+    
+end
 
 
 
