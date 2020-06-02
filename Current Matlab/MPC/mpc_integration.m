@@ -25,6 +25,7 @@ sys.D = lin_discrete.D;
 Ts = 1;                    %timestep equal to 1 sec
 %K = 273.15;
 x0=[0;0;0;0];              %initial state values 21 deg C
+Tamb =21;
 
 dim.nx=length(sys.A);      %state dimension
 dim.ny=dim.rowsC;          %output dimension
@@ -80,47 +81,117 @@ r_input = repmat(20,1,dim.N+1); %20 deg
 
 %% Running controller
 
+tclab;
 clf
 hold on
 
+x0 = [T1C()-Tamb; T2C()-Tamb; T1C()-Tamb; T2C()-Tamb];
 x = x0;
 implementedU = [];
 implementedUtotal = [];
 X0 = [];
 
-for i = 1:900 
-  
+Rlqr = eye(2)*1E3;
+%Qlqr = eye(4);
+Qlqr = [80 0 0 0; 0 80 0 0; 0 0 40 0; 0 0 0 40];
+
+%[Kest,L,P2] = kalman(lin_discrete,[],[],[]);
+[K,S,CLP] = dlqr(sys.A',sys.C',Qlqr,Rlqr,[]);
+
+h1s = [];
+h2s = [];
+t1s = [];
+t2s = [];
+OUTPUT = [];
+tic
+for i = 1:200
+   toc
+   tic 
   [solution,~] = controller{x,r_input};  
   U = solution{1};
   X = solution{2};
+  
+    ht1 = U(1,1);
+    ht2 = U(2,1);
+    h1(ht1);
+    h2(ht2);
+    
+    t1 = T1C();
+    t2 = T2C();
+  
+    %x = sys.A*x + sys.B*U(:,1);
+    y = [t1-Tamb; t2-Tamb];
+    y_hat = sys.C*x;
+    %y = y_hat(:,1);
+    OUTPUT = [OUTPUT x];
+    x = sys.A*x + sys.B*U(:,1)+ K'*(y - y_hat);
+    
   stairs(i:i+length(U)-1,U(1,:)','r')
   hold on
   stairs(i:i+length(U)-1,U(2,:)','b')
-  x = sys.A*x + sys.B*U(:,1);
-  pause(0.05)
-  stairs(i:i+length(U)-1,U(1,:)','k')
+  
   implementedUtotal = [implementedUtotal U(:,1)];
   X0 = [X0 X(:,1)];
+  
+    h1s = [h1s,ht1];
+    h2s = [h2s,ht2];
+    t1s = [t1s,t1];
+    t2s = [t2s,t2];
+    
+    n = length(t1s);
+    time = linspace(0,(n+1),n);
+    
+    clf
+    subplot(2,1,1)
+    plot(time,t1s,'b.','MarkerSize',10);
+    hold on
+    plot(time,t2s,'r.','MarkerSize',10);
+    ylabel('Temperature (degC)')
+    legend('Temperature 1','Temperature 2','Location','NorthWest')
+    
+    subplot(2,1,2)
+    plot(time,h1s,'b-','LineWidth',2);
+    hold on
+    plot(time,h2s,'r--','LineWidth',2);
+    ylabel('Heater (0-5.5 V)')
+    xlabel('Time (sec)')
+    legend('Heater 1','Heater 2','Location','NorthWest')
+    drawnow;
+    pause(Ts-0.65)
 end
+toc
+h1(0);
+h2(0);
+display('Heaters off')
 
 figure(2)
 stairs(implementedUtotal(1,:),'p') %implementedUtotal
 hold on
 stairs(implementedUtotal(2,:),'g') %implementedUtotal
 
+T = [t1s;t2s] - ones(2,length(t1s))*Tamb;
+
+figure(3)
+% subplot(2,1,1)
+plot(linspace(1,length(T),length(T)),T(1,:))
+hold on 
+plot(linspace(1,length(T),length(T)),OUTPUT(3,:))
+plot(linspace(1,length(T),length(T)),T(2,:))
+plot(linspace(1,length(T),length(T)),OUTPUT(4,:))
+legend('measured T1','observer T1','measured T2','observer T2')
 
 %% Check 
 
-x_d = x0;
-for i = 1:900
-    x_d(:,i+1) = sys.A*x_d(:,i)+sys.B*implementedUtotal(:,i);
-end
-
-figure(3)
-plot(linspace(1,length(x_d),length(x_d)),x_d)
-
-figure(4)
-plot(linspace(1,length(x_d),length(x_d)),x_d(4,:))
+% x_d = x0;
+% for i = 1:900
+%     x_d(:,i+1) = sys.A*x_d(:,i)+sys.B*implementedUtotal(:,i);
+% end
+% 
+% figure(3)
+% plot(linspace(1,length(x_d),length(x_d)),x_d)
+% 
+% figure(4)
+% plot(linspace(1,length(x_d),length(x_d)),x_d(4,:))
 
 
 
