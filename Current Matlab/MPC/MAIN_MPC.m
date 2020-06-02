@@ -6,20 +6,26 @@ close all
 
 %x1 = floor [C] %x2 = internal wall [C]
 %x3 = ext. wall [C] %x4 = room temp [C]
+load('MIMO_para2')
 
+%%
 days = 2;                   %data is from 01/01/2020 until 16/03/2020
 Ts = 600;                   % 10 min, Ts always in seconds
 K = 273.15;
 x0=[20;15;10;20];           %initial state values
 %x0=[20;20;20;20];
 
-[Temp,Solar,Humans] = dataload(Ts,days); %load data
+%[Temp,Solar,Humans] = dataload(Ts,days); %load data
 
-[sysc, sysd] = dynamics_build(Ts,x0);   %compute continuous and discrete state space system
+%[sysc, sysd] = dynamics_build(Ts,x0);   %compute continuous and discrete state space system
+A = lin_discrete.A;
+B =lin_discrete.B;
+C =lin_discrete.C;
+D =lin_discrete.D;
 
-dim.nx=length(sysd.A);          %state dimension
+dim.nx=length(A);          %state dimension
 dim.ny=1;                       %output dimension
-dim.nu=length(sysd.B);          %input dimension
+dim.nu=length(B);          %input dimension
 dim.N=24;                      %horizon %2hours
 
 %Definition of quadratic cost function
@@ -65,12 +71,13 @@ dim.N=24;                      %horizon %2hours
 
 %% Control with normal objective (xQx + uRu)
 
-[b,Arep]=constraintgen(Humans,Solar,Temp,days,Ts);
+%[b,Arep]=constraintgen(Humans,Solar,Temp,days,Ts);
 
 u = sdpvar(repmat(dim.nu,1,dim.N),repmat(1,1,dim.N));
 x = sdpvar(repmat(dim.nx,1,dim.N+1),repmat(1,1,dim.N+1));
-r = sdpvar(repmat(1,1,dim.N+1),repmat(1,1,dim.N+1));
-b_sdpvr = sdpvar(3*dim.N,1);
+%r = sdpvar(repmat(1,1,dim.N+1),repmat(1,1,dim.N+1));
+r = sdpvar(2,1);
+%b_sdpvr = sdpvar(3*dim.N,1);
 %r = 20;  % make decision var if optimizer command is used
 
 %%
@@ -81,8 +88,8 @@ Q = sdpvar(repmat(1,1,dim.N),repmat(1,1,dim.N));
 xlowlim = sdpvar(repmat(1,1,dim.N),repmat(1,1,dim.N));
 R = [ 0.0001 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1];
 Q_terminal = 100;
-ulowlim = -5000;
-uuplim = 10000;
+ulowlim = 100;
+uuplim = 0;
 %xlowlim = 15;
 xuplim = 22;
 
@@ -90,15 +97,15 @@ constraints = [];
 objective = 0;
 
 for k = 1:dim.N
-    objective = objective + (sysd.C*x{k}-r{k})'*Q{k}*(sysd.C*x{k}-r{k}) + u{k}'*R*u{k};
+    objective = objective + (C*x{k}-r{k})'*Q{k}*(C*x{k}-r{k}) + u{k}'*R*u{k};
     if k == dim.N 
-         objective = objective + (sysd.C*x{k+1}-r{k})'*Q_terminal*(sysd.C*x{k+1}-r{k});
+         objective = objective + (x{k+1}-r{k})'*Q_terminal*(C*x{k+1}-r{k});
     end
-    constraints = [constraints, x{k+1} == sysd.A*x{k} + sysd.B*u{k}];
-    constraints = [constraints, Arep*u{k} == b_sdpvr(k*3-2:k*3,:)];
+    constraints = [constraints, x{k+1} == A*x{k} + B*u{k}];
+    %constraints = [constraints, Arep*u{k} == b_sdpvr(k*3-2:k*3,:)];
     %constraints = [constraints, Arep*u{k} == b(k*3-2:k*3,:)];
     constraints = [constraints, ulowlim <= u{k}(1) <= uuplim];
-    constraints = [constraints, xlowlim{k} <= x{k}(4) <= xuplim];
+    %constraints = [constraints, xlowlim{k} <= x{k}(4) <= xuplim];
 end
 
 %% Using optimize
@@ -116,7 +123,7 @@ options = sdpsettings('solver','quadprog');
 % parameters_in = {x{1},b_sdpvr};
 % parameters_in = {x{1},[r{:}]};
 % parameters_in = {x{1}};
-parameters_in = {x{1},[r{:}],b_sdpvr,[Q{:}], [xlowlim{:}]};
+parameters_in = {x{1},[r{:}]};
 controller = optimizer(constraints, objective,options,parameters_in,{[u{:}],[x{:}]});
 
 r_input = repmat(20,1,dim.N+1);

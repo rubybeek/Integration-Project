@@ -52,11 +52,13 @@ subplot(2,1,1)
 plot(data(:,1),data(:,2))
 hold on
 plot(t,(y(:,1)))
+legend('measured data','linearized model')
 
 subplot(2,1,2)
 plot(data(:,1),data(:,3))
 hold on
 plot(t,(y(:,2)))
+legend('measured data','linearized model')
 
 % Conclusion: linearization is only accurate when operating in temperatures
 % close to the temperature around which is linearized. Thus for the ss

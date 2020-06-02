@@ -28,8 +28,8 @@ end
 
 %%
 
-P = [pole(lin_statespace)]';
-% P = [-0.0626 -.0626 -0.009 -0.027];
+%P = [pole(lin_statespace)]';
+P = [-0.0626 -.0626 -0.009 -0.027];
 K = place(Ac,Bc,P);
 
 newsys = ss(Ac-Bc*K,Bc,Cc,Dc);
@@ -58,9 +58,6 @@ Ts = 10;
 
 kalmansys_discr = c2d(Kest,Ts);
 MIMO_scaleddiscr = c2d(MIMO_scaled,Ts);
-
-[Kest,L,P2] = kalman(MIMO_scaleddiscr,[],[],[]);
-% ;[Kest,S,e] = lqr(MIMO_scaleddiscr,Q,R,N);
 
 figure(4)
 bode(MIMO_scaled)
@@ -117,7 +114,7 @@ for i = 1:50  %50 x 10 sec
     y = [t1-Tamb; t2-Tamb];
     y_hat(:,i) = Cd_sc*x(:,i);
     %y = y_hat(:,1);
-    x(:,i+1) = Ad_sc*x(:,i) + Bd_sc*u(:,i)+ L*(y - y_hat(:,1));
+    x(:,i+1) = Ad_sc*x(:,i) + Bd_sc*u(:,i);% + L*(y - y_hat(:,1));
     
     h1s = [h1s,ht1];
     h2s = [h2s,ht2];
