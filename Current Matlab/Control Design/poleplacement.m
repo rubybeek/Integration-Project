@@ -28,9 +28,18 @@ end
 
 %%
 
-P = [pole(lin_statespace)]';
-% P = [-0.0626 -.0626 -0.009 -0.027];
-K = place(Ac,Bc,P);
+% P = [pole(lin_statespace)]';
+% %P = [-0.0313   -0.0313   -0.0044   -0.0134];
+% P = [-0.01   -0.01   -0.004   -0.013 ];
+% % P = [-0.0626 -.0626 -0.009 -0.027];
+% K = place(Ac,Bc,P);
+
+R = 1E3;
+Q = eye(4);
+
+%[P,L,K] = dare(Ac,Bc,Q,R);
+[K,P,E] = lqr(Ac,Bc,Q,R);
+
 
 newsys = ss(Ac-Bc*K,Bc,Cc,Dc);
 
@@ -42,21 +51,25 @@ step(MIMO)
 % figure(2)
 % step(lin_statespace)
 
-Kdc = dcgain(MIMO);
+Kdc = dcgain(MIMO(1,1));
+%Kdc = dcgain(lin_discrete);
+%Kr = abs(inv(Kdc));
 Kr = inv(Kdc);
-
-MIMO_scaled = ss(Ac-Bc*K,Bc*Kr,Cc,Dc);
+%Kr = [1/Kdc(1,1) 1/Kdc(1,2);1/Kdc(2,1) 1/Kdc(2,2)]
+    
+%MIMO_scaled = ss(Ac-Bc*K,Bc*Kr,Cc,Dc);
+MIMO_scaled = ss(Ac,Bc*Kr,Cc,Dc);
 
 figure(3)
 step(MIMO_scaled)
 
 %% design observer 
 
-[Kest,L,P2] = kalman(MIMO_scaled,[],[],[]);
+%[Kest,L,P2] = kalman(MIMO_scaled,[],[],[]);
 
-Ts = 10;
+Ts = 1;
 
-kalmansys_discr = c2d(Kest,Ts);
+%kalmansys_discr = c2d(Kest,Ts);
 MIMO_scaleddiscr = c2d(MIMO_scaled,Ts);
 
 [Kest,L,P2] = kalman(MIMO_scaleddiscr,[],[],[]);
@@ -92,22 +105,8 @@ ht2 = 0;
 h1(ht1);
 h2(ht2);
 
-
-for i = 1:50  %50 x 10 sec
-    
+for i = 1:50  %50 x 10 sec   
     u(:,i) = Kr*r - K*x(:,i);
-    if u(1,i) >= 80
-        u(1,i) = 80;
-    end
-    if u(2,i) >= 80
-        u(2,i) = 80;
-    end
-    if u(1,i) <= 0
-        u(1,i) = 0;
-    end
-    if u(2,i) <= 0
-        u(2,i) = 0;
-    end
     ht1 = u(1,i);
     ht2 = u(2,i);
     h1(ht1);
@@ -145,7 +144,7 @@ for i = 1:50  %50 x 10 sec
     drawnow;
     %t = toc;
 
-    %pause(Ts)
+    pause(Ts)
 end
 
 h1(0);
