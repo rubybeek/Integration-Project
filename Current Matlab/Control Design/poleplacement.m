@@ -92,16 +92,16 @@ h2(ht2);
 
 for i = 1:50  %50 x 10 sec
     
-    u(:,i) = r - K*x(:,i);
+    u(:,i) = Kr*r - K*x(:,i);
     ht1 = u(1,i);
     ht2 = u(2,i);
     h1(ht1);
     h2(ht2);
     t1 = T1C();
     t2 = T2C();
-    %y = [t1-Tamb; t2-Tamb];
+    y = [t1-Tamb; t2-Tamb];
     y_hat(:,i) = Cd_sc*x(:,i);
-    y = y_hat(:,1);
+    %y = y_hat(:,1);
     x(:,i+1) = Ad_sc*x(:,i) + Bd_sc*u(:,i) + L*(y - y_hat(:,1));
     
     h1s = [h1s,ht1];
@@ -128,7 +128,7 @@ for i = 1:50  %50 x 10 sec
     xlabel('Time (sec)')
     legend('Heater 1','Heater 2','Location','NorthWest')
     drawnow;
-    t = toc;
+    %t = toc;
 
     %pause(Ts)
 end
