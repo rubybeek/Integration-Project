@@ -48,8 +48,8 @@ MIMO = tf(newsys(1:2,1:2));
 figure(1)
 step(MIMO)
 
-% figure(2)
-% step(lin_statespace)
+figure(2)
+step(lin_statespace)
 
 Kdc = dcgain(MIMO(1,1));
 %Kdc = dcgain(lin_discrete);
