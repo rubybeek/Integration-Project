@@ -104,28 +104,22 @@ Cd_sc = MIMO_scaleddiscr.C;
 %% Observer Testing
 
 load('data3.mat')
-uobs = data(:,3:4)';
+u = data(:,3:4)';
 x_data = data(:,1:2)';
-xobs(:,1) = [21.8475; 20.8700; 21.8475; 20.8700];
-y_hatobs =zeros(2,length(data));
+x(:,1) = [21.8475; 20.8700; 21.8475; 20.8700];
 
 for i = length(data)-1
-    yobs = x_data(:,i);
-    y_hatobs(:,i) = Cd_sc*xobs(:,i);
-    xobs(:,i+1) = Ad_sc*xobs(:,i) + Bd_sc*uobs(:,i)+ L'*(yobs - y_hatobs);
-
-%         y = [t1-Tamb; t2-Tamb];
-%     y_hat(:,i) = Cd_sc*x(:,i);
-%     %y = y_hat(:,1);
-%     x(:,i+1) = Ad_sc*x(:,i) + Bd_sc*u(:,i)+ L'*(y - y_hat(:,1));
-    
+    yobs(:,i) = x_data(:,i);
+    y_hatobs(:,i) = Cd_sc*xob(:,i);
+    xobs(:,i+1) = Ad_sc*xobs(:,i) + Bd_sc*uobs(:,i)+ L'*(yobs(:,i) - y_hatobs(:,i));
 end
+
 figure
 plot(linspace(1,length(data),length(data)),x_data(:,1))
 hold on
-plot(linspace(1,length(data),length(data)),xobs(:,1))
+plot(linspace(1,length(data),length(data)),x(:,1))
 plot(linspace(1,length(data),length(data)),x_data(:,2))
-plot(linspace(1,length(data),length(data)),xobs(:,2))
+plot(linspace(1,length(data),length(data)),x(:,2))
 
 %%
 Tamb = 21;
