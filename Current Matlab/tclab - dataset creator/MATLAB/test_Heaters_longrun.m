@@ -21,7 +21,13 @@ for i = 1:3599
     tic;
     if i==10
         disp('Turn on heater 1')
-        ht1 = 120;
+        ht2 = 10;
+        h1(ht1);
+        h2(ht2);
+    end
+    if i==400
+        disp('Turn on heater 1')
+        ht2 = 50;
         h1(ht1);
         h2(ht2);
     end
@@ -33,25 +39,25 @@ for i = 1:3599
     end
     if i==550
         disp('Turn on heater 2')
-        ht2 = 40;
+        ht2 = 15;
         h1(ht1);
         h2(ht2);
     end
-    if i==950
+    if i==850
         disp('Turn on heater 1')
-        ht1 = 100;
+        ht1 = 80;
         h1(ht1);
         h2(ht2);
     end
-    if i==1000
+    if i==900
         disp('Turn on heater 1')
-        ht1 = 35;
+        ht1 = 25;
         h1(ht1);
         h2(ht2);
     end
     if i==1250
         disp('Turn on heater 2')
-        ht2 = 80;
+        ht2 = 70;
         h1(ht1);
         h2(ht2);
     end
@@ -71,52 +77,53 @@ for i = 1:3599
     if i==2100
         disp('Turn on heater 1 & 2')
         ht1 = 15;
-        ht2 = 40;
+        ht2 = 0;
         h1(ht1);
         h2(ht2);
     end
-     if i==2400
+     if i==2300
         disp('Turn on heater 1 & 2')
         ht1 = 0;
         ht2 = 20;
         h1(ht1);
         h2(ht2);
      end
-     if i==2800
-        disp('Turn on heater 1')
-        ht1 = 80;
-        h1(ht1);
-        h2(ht2);
-     end
-     if i==2900
-        disp('Turn on heater 2')
-        ht1 = 15;
-        ht2 = 50;
-        h1(ht1);
-        h2(ht2);
-     end
-     if i==3100
+     if i==2500
         disp('Turn on heater 1')
         ht1 = 40;
         h1(ht1);
         h2(ht2);
-    end
-    if i==3200
+     end
+     if i==2750
         disp('Turn on heater 2')
-        ht2 = 50;
+        ht1 = 50;
+        ht2 = 5;
         h1(ht1);
         h2(ht2);
-    end
-    if i==3300
+     end
+     if i==2900
         disp('Turn on heater 1')
         ht1 = 10;
         h1(ht1);
         h2(ht2);
     end
-    if i==3500
+    if i==3150
+        disp('Turn on heater 2')
+        ht2 = 40;
+        ht1 = 20;
+        h1(ht1);
+        h2(ht2);
+    end
+    if i==3200
+        disp('Turn on heater 1')
+        ht2 = 10;
+        h1(ht1);
+        h2(ht2);
+    end
+    if i==3400
         disp('Turn on heater 1 & 2')
-        ht1 = 50;
-        ht2 = 60;
+        ht1 = 30;
+        ht2 = 40;
         h1(ht1);
         h2(ht2);
     end
@@ -172,3 +179,5 @@ h1(0);
 h2(0);
 
 disp('Heater Test Complete')
+
+data = [linspace(1,length(t1s),length(t1s))' t1s' t2s' h1s' h2s'];

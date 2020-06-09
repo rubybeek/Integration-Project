@@ -44,7 +44,6 @@ constr.upu2 = 100;
 constr.lowx = -21; % subtracted Tamb
 constr.upx = 80; 
 
-
 %% Formulating objective (xQx + uRu) with constraints
 
 u = sdpvar(repmat(dim.nu,1,dim.N),repmat(1,1,dim.N));
@@ -77,7 +76,6 @@ parameters_in = {x{1},[r{:}]};
 controller = optimizer(constraints, objective, options, parameters_in,{[u{:}],[x{:}]});
 
 r_input = repmat(20,1,dim.N+1); %20 deg
-
 
 %% Running controller
 
