@@ -27,7 +27,6 @@ else
     display('System is NOT controllable or observable');
 end
 
-
 %%
 
 Poles = [pole(lin_statespace)]'; %[-0.0313   -0.0313   -0.0044   -0.0134]
@@ -128,7 +127,7 @@ ht2 = 0;
 h1(ht1);
 h2(ht2);
 
-Ki =
+%Ki =
 
 for i = 1:1500  %x1 sec (Ts)
     tic;
@@ -199,7 +198,7 @@ figure
 subplot(2,1,1)
 plot(linspace(1,length(x),length(x)),[ones(1,500)*19, ones(1,500)*14, ones(1,501)*24],'k')
 hold on
-plot(linspace(1,length(t1s),length(t1s)),t1s-Tamb,'color','y');
+plot(linspace(1,length(t1s),length(t1s)),t1s-Tamb,'Color','y');
 plot(linspace(1,length(x),length(x)),x(3,:),'LineWidth',1,'Color','b');
 plot(linspace(1,length(t2s),length(t2s)),t2s-Tamb,'Color','g');
 plot(linspace(1,length(x),length(x)),x(4,:),'LineWidth',1,'Color','r');
