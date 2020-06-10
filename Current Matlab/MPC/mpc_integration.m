@@ -44,7 +44,6 @@ constr.upu2 = 100;
 constr.lowx = -21; % subtracted Tamb
 constr.upx = 80; 
 
-
 %% Formulating objective (xQx + uRu) with constraints
 
 u = sdpvar(repmat(dim.nu,1,dim.N),repmat(1,1,dim.N));
@@ -204,8 +203,12 @@ ref = r_input';
 % plot(linspace(1,length(T),length(T)),OUTPUT(4,:))
 % legend('measured T1','observer T1','measured T2','observer T2')
 
+<<<<<<< HEAD
 
 %% Running controller on model
+=======
+%% Running controller
+>>>>>>> 459f6d95ea6fb3214a74ddc27aaa51ca5b69c75c
 
 clf
 hold on
