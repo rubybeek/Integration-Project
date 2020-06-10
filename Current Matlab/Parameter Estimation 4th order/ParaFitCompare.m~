@@ -2,7 +2,7 @@
 
 global t T1meas T2meas Q1 Q2
 
-filename = 'data4.mat';
+filename = 'data3.mat';
 delimiterIn = ',';
 headerlinesIn = 1;
 z = importdata(filename,delimiterIn,headerlinesIn);
@@ -69,11 +69,9 @@ yhat_2 = T2meas;
 
 
 for i = 1:length(T1meas)
-    VAF1_num = sum(norm((y_1(i,:) - yhat_1(i,:))^2),2);
-    VAF1_den = sum(norm((y_1(i,:)),2));
-    VAF2_num = sum(norm((y_2(i,:) - yhat_2(i,:))^2),2);
-    VAF2_den = sum(norm((y_2(i,:)),2));
+    VAF_num = sum(norm((y_1(i,:) - yhat_1(i,:))^2),2);
+    VAF_den = sum(norm((y_1(i,:)),2));
 end
 
-VAF1 = (1-(VAF1_num/VAF1_den))*100
-VAF2 = (1-(VAF2_num/VAF2_den))*100
+VAF_1 = (1-(VAF_num/VAF_den))*100;
+
