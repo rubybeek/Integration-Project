@@ -104,21 +104,22 @@ controller = optimizer(constraints, objective, options, parameters_in,{[u{:}],[x
 % ref = [r_input1 r_input2 r_input3];
 
 % % sinus wave reference
-sine1 = dsp.SineWave(2,10);
-sine1.SamplesPerFrame = 1000;
-y = sine1();
-r_input(1,:) = 3*y + 20;
-r_input(2,:) = 3*y + 20;
-ref = r_input';
+load('referencesin.mat') %period way to short
+ref = [ref ref]'-Tamb;
+% sine1 = dsp.SineWave(2,10);
+% sine1.SamplesPerFrame = 1000;
+% y = sine1();
+% r_input(1,:) = 3*y + 20;
+% r_input(2,:) = 3*y + 20;
+% ref = r_input';
 
-figure()
-plot(linspace(1,length(ref)-2*dim.N,length(ref)-2*dim.N),ref(1,1:end-2*dim.N)+Tamb,'LineWidth',1)
-hold on
-plot(linspace(1,length(ref)-2*dim.N,length(ref)-2*dim.N),ref(2,1:end-2*dim.N)+Tamb,'LineWidth',1)
-legend('Ref')
-xlabel('Time (s)')
-ylabel('Temperature (Deg)')
-ylim([30 45])
+% figure()
+% plot(linspace(1,length(ref),length(ref)),ref(1,1:end)+Tamb,'LineWidth',1)
+% hold on
+% %plot(linspace(1,length(ref),length(ref)),ref(2,1:end)+Tamb,'LineWidth',1)
+% legend('Ref')
+% xlabel('Time (s)')
+% ylabel('Temperature (Deg)')
 
 %% Observer
 % Rlqr = eye(2)*1E3;
@@ -157,7 +158,7 @@ t1s = [];
 t2s = [];
 OUTPUT = [];
 
-for i = 1:1200
+for i = 1:1000
    tic ;
    r_input = ref(:,i:(i+dim.N)); 
    [solution,~] = controller{x,r_input};  
@@ -230,15 +231,16 @@ figure(3)
 subplot(2,1,1)
 plot(linspace(1,length(T),length(T)),ref(1,1:length(T))+Tamb,'Color','k')
 hold on
-plot(linspace(1,length(T),length(T)),ref(2,1:length(T))+Tamb,'Color','k')
+%plot(linspace(1,length(T),length(T)),ref(2,1:length(T))+Tamb,'Color','k')
 plot(linspace(1,length(T),length(T)),T(1,:)+Tamb,'Color','g')
 plot(linspace(1,length(T),length(T)),T(2,:)+Tamb,'Color','y')
 plot(linspace(1,length(T),length(T)),OUTPUT(3,:)+Tamb,'LineWidth',1,'Color','r')
 plot(linspace(1,length(T),length(T)),OUTPUT(4,:)+Tamb,'LineWidth',1,'Color','b')
-legend('Ref T1','Ref T2','T1','T2','observed T1','observed T2')
+legend('Ref','T1','T2','observed T1','observed T2')
 ylabel('Temperature')
 xlabel('Time (s)')
 xlim([0 length(implementedUtotal)])
+ylim([15 38])
 
 subplot(2,1,2)
 stairs(implementedUtotal(1,:),'r','LineWidth',1) %implementedUtotal
