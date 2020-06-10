@@ -207,8 +207,7 @@ ref = r_input';
 
 
 
-%% Running controller
-
+%% Running controller on model
 
 clf
 hold on
