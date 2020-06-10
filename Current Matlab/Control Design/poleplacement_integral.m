@@ -27,6 +27,11 @@ else
     display('System is NOT controllable or observable');
 end
 
+Ac = [Ac zeros(4,1) ; 0 0 0 0 1];
+Bc = [Bc zeros(4,1); 0 0 -1];
+Cc = [Cc zeros(2,1)];
+Dc = 0;
+lin_statespace = ss(Ac,Bc,Cc,Dc); 
 
 %%
 
@@ -36,13 +41,14 @@ Poles_disc = [pole(lin_discrete)]';
 % p3 for faster T2 response, p4 for faster T1 response
 %P = [-0.035   -0.035   -0.0120   -0.0150];
 
-P = [-0.034   -0.034   -0.0120   -0.0200]; %THIS IS THE ONE
+P = [-0.034   -0.034   -0.0120   -0.0200 0]; %THIS IS THE ONE
 K = place(Ac,Bc,P);
 
 newsys = ss(Ac-Bc*K,Bc,Cc,Dc);
 newsys_disc = c2d(newsys,1,'zoh'); 
 Poles_dis_new = pole(newsys_disc);
 MIMO = tf(newsys(1:2,1:2));
+MIMO = tf(newsys);
 
 figure(1)
 step(MIMO)
@@ -53,25 +59,25 @@ step(lin_statespace)
 Kdc = dcgain(MIMO);
 Kr = inv(Kdc);
    
-MIMO_scaled = ss(Ac-Bc*K,Bc*Kr,Cc,Dc);
-
-figure(3)
-step(MIMO_scaled)
-
-%% design observer 
-% deze section is onnodig!
-
-Ts = 1;
-MIMO_scaleddiscr = c2d(MIMO_scaled,Ts);
-
-figure(4)
-bode(MIMO_scaled)
-
-figure(5)
-bode(lin_statespace)
-
-figure(6)
-step(MIMO_scaleddiscr)
+% MIMO_scaled = ss(Ac-Bc*K,Bc*Kr,Cc,Dc);
+% 
+% figure(3)
+% step(MIMO_scaled)
+% 
+% %% design observer 
+% % deze section is onnodig!
+% 
+% Ts = 1;
+% MIMO_scaleddiscr = c2d(MIMO_scaled,Ts);
+% 
+% figure(4)
+% bode(MIMO_scaled)
+% 
+% figure(5)
+% bode(lin_statespace)
+% 
+% figure(6)
+% step(MIMO_scaleddiscr)
 
 %% Observer Testing
 Rlqr = eye(2)*1E2*8;
@@ -128,8 +134,6 @@ ht2 = 0;
 h1(ht1);
 h2(ht2);
 
-Ki =
-
 for i = 1:1500  %x1 sec (Ts)
     tic;
     if i <= 500
@@ -139,8 +143,7 @@ for i = 1:1500  %x1 sec (Ts)
     else 
         r = [24;24]; %45 degree
     end
-    
-    u(:,i) = Kr*r - K*x(:,i); % - Ki*z(:,i);
+    u(:,i) = Kr*r - K*x(:,i) - Ki*z;
     
     if u(1,i) <= 0
         u(1,i) = 0;
@@ -155,11 +158,9 @@ for i = 1:1500  %x1 sec (Ts)
     h2(ht2);
     t1 = T1C();
     t2 = T2C();
-    
     y = [t1-Tamb; t2-Tamb];
     y_hat(:,i) = Cd*x(:,i);
     z(:,i) = y_hat(:,1) - r;
-    
     x(:,i+1) = Ad*x(:,i) + Bd*u(:,i) + L*(y - y_hat(:,i));
     
     h1s = [h1s,ht1];
