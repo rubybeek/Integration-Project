@@ -86,7 +86,7 @@ parameters_in = {x{1},[r{:}]};
 controller = optimizer(constraints, objective, options, parameters_in,{[u{:}],[x{:}]});
 
 % % constant reference of 40 deg
-% r_input = repmat(20,1,dim.N+1); 
+% ref = repmat(20,1,dim.N*3); 
 % 
 % % switching straight reference
 % r_input1 = repmat(20,1,dim.N); %40 deg
