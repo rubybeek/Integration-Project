@@ -68,23 +68,23 @@ compare(dataset2,ssest_model,n4sid_model,Verhaegen_model,'LineWidth',1);
 
 %% Subspace identification using ssest
 % MIMO2 = ssest(dataset1,2);
-% MIMO2 = c2d(MIMO2,1);
+% MIMO2 = c2d(MIMO1,1);
 % MIMO3 = ssest(dataset1,3);
-% MIMO3 = c2d(MIMO3,1);
+% MIMO3 = c2d(MIMO1,1);
 % MIMO4 = ssest(dataset1,4);
-% MIMO4 = c2d(MIMO4,1);
+% MIMO4 = c2d(MIMO1,1);
 % MIMO5 = ssest(dataset1,5);
-% MIMO5 = c2d(MIMO5,1);
+% MIMO5 = c2d(MIMO1,1);
 % MIMO6 = ssest(dataset1,6);
-% MIMO6 = c2d(MIMO6,1);
+% MIMO6 = c2d(MIMO1,1);
 % MIMO7 = ssest(dataset1,7);
-% MIMO7 = c2d(MIMO7,1);
+% MIMO7 = c2d(MIMO1,1);
 % MIMO8 = ssest(dataset1,8);
-% MIMO8 = c2d(MIMO8,1);
+% MIMO8 = c2d(MIMO1,1);
 % MIMO9 = ssest(dataset1,9);
-% MIMO9 = c2d(MIM09,1);
+% MIMO9 = c2d(MIMO1,1);
 % MIMO10 = ssest(dataset1,10);
-% MIMO10 = c2d(MIMO10,1);
+% MIMO10 = c2d(MIMO1,1);
 % 
 % figure(4)
 % compare(dataset2,MIMO1);
