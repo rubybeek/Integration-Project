@@ -94,7 +94,6 @@ controller = optimizer(constraints, objective, options, parameters_in,{[u{:}],[x
 % r_input3 = repmat(24,2,500+2*dim.N); %45 deg
 % ref = [r_input1 r_input2 r_input3];
 
-ref = repmat(22,2,2000);
 
 % switching ref, different per sensor
 % r_input1(1,:) = repmat(19,1,400); %40 deg
@@ -105,16 +104,17 @@ ref = repmat(22,2,2000);
 % r_input3(2,:) = repmat(19,1,400+2*dim.N); %45 deg
 % ref = [r_input1 r_input2 r_input3];
 
-% % sinus wave reference
-% load('referencesin.mat') %period way to short
-% ref = [ref ref]'-Tamb;
-
+% sinus wave reference
+load('referencesin3.mat') %period way to short
+ref = ref'-Tamb;
+ref = [ref;ref];
+% 
 % sine1 = dsp.SineWave(2,10);
 % sine1.SamplesPerFrame = 1000;
 % y = sine1();
 % r_input(1,:) = 3*y + 20;
 % r_input(2,:) = 3*y + 20;
-% ref = r_input';
+% ref = r_input;
 
 figure()
 plot(linspace(1,length(ref),length(ref)),ref(1,1:end)+Tamb,'LineWidth',1)
@@ -267,7 +267,7 @@ implementedU = [];
 implementedUtotal = [];
 X0 = [];
 
-for i = 1:500 
+for i = 1:1500 
   r_input = ref(:,i:(i+dim.N)); 
   [solution,~] = controller{x,r_input};  
   U = solution{1};
@@ -291,12 +291,12 @@ legend('Input heater 1','Input heater 2')
 xlabel('Time [sec]')
 ylabel('Power Input [%]')
 set(gca,'FontSize',14)
-
+xlim([1 1500])
 
 %% Check 
 
 x_d = x0;
-for i = 1:500
+for i = 1:1500
     x_d(:,i+1) = sys.A*x_d(:,i)+sys.B*implementedUtotal(:,i);
 end
 
@@ -306,17 +306,22 @@ legend('Temperature heater 1','Temperature heater 2','Temperature sensor 1','Tem
 xlabel('Time [sec]')
 ylabel('Temperature [Celsius]')
 set(gca,'FontSize',14)
+xlim([1 1500])
 
 %%
 figure(4)
 plot(linspace(1,length(x_d),length(x_d)),x_d(3,:)+Tamb,'color','r','lineWidth',1)
+xlim([1 1500])
 hold on
 plot(linspace(1,length(x_d),length(x_d)),x_d(4,:)+Tamb,'color','b','lineWidth',1)
-plot(linspace(1,length(ref),length(ref)),ref(1,1:end)+Tamb,'LineWidth',1,'color','k')
+plot(linspace(1,length(ref),length(ref)),ref(:,1:end)+Tamb,'LineWidth',1,'color','k')
 legend('Temperature sensor 1','Temperature sensor 2','Reference','Location','southeast')
 xlabel('Time [sec]')
 ylabel('Temperature [Celsius]')
 set(gca,'FontSize',14)
+
+
+
 
 figure(5)
 plot(linspace(1,length(ref),length(ref)),ref(1,1:end)+Tamb,'LineWidth',1,'color','g')
@@ -324,10 +329,10 @@ plot(linspace(1,length(ref),length(ref)),ref(1,1:end)+Tamb,'LineWidth',1,'color'
 %%
 
 
-%plot(linspace(1,length(ref),length(ref)),ref(2,1:end)+Tamb,'LineWidth',1)
+plot(linspace(1,length(ref),length(ref)),ref(2,1:end)+Tamb,'LineWidth',1)
 
-% xlabel('Time (s)')
-% ylabel('Temperature (Deg)')
+xlabel('Time (s)')
+ylabel('Temperature (Deg)')
 
 
 
