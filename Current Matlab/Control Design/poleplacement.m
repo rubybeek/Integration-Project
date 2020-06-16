@@ -109,10 +109,72 @@ plot(linspace(1,length(data),length(data)),xobs(3,:))
 plot(linspace(1,length(data),length(data)),x_data(2,:))
 plot(linspace(1,length(data),length(data)),xobs(4,:))
 legend('measured T1','Observed T1','measured T2','Observed T2')
+%% Different references
+x(:,1) = [0; 0; 0; 0];
+
+%switching ref, different per sensor
+% r_input1(1,:) = [repmat(19,1,600),repmat(14,1,500),repmat(22,1,300),repmat(22,1,600)]; %40 deg
+% r_input1(2,:) = [repmat(10,1,500),repmat(14,1,300),repmat(14,1,600),repmat(19,1,600)]; %40 deg
+% r = [r_input1];
+
+Tamb = 21;
+
+% r_input1(1,:) = [repmat(19,1,600)]; %40 deg
+% r_input1(2,:) = [repmat(19,1,600)]; %40 deg
+% r = [r_input1];
+
+r_input1 = zeros(2,1500);
+r_input1(1,:) = [repmat(19,1,1500)]; %40 deg
+r_input1(2,:) = [repmat(19,1,300),repmat(24,1,300),repmat(14,1,300),repmat(24,1,300),repmat(14,1,300)]; %40 deg
+r = [r_input1];
+
+%% simulation
+% for i = 1:600
+% %     if i <= 1000
+% %         r(:,i) = [19;19]; %40 degree
+% %     elseif (i > 1000) && (i <= 2000);
+% %         r(:,i) = [14;14]; %35 degree
+% %     else 
+% %         r(:,i) = [24;24]; %45 degree
+% %     end
+%     u(:,i) = Kr*r(:,i) - K*x(:,i);
+%  
+%     %u(:,i) = r(:,i) - Kx*x(:,i) - Ki*z(:,1);
+%     if u(1,i) <= 0
+%         u(1,i) = 0;
+%     end
+%     if u(2,i) <= 0
+%         u(2,i) = 0;
+%     end
+%     x(:,i+1) = Ad*x(:,i) + Bd*u(:,i);  
+%     %y = [x(3,i);x(4,i)];
+%     %y_hat(:,i) = Cd*x(:,i); 
+%     %z(:,i) = Cd*x(:,1) - r(:,1);
+%     %x(:,i+1) = Ad*x(:,i) + Bd*u(:,i) + L*(y - y_hat(:,i));
+% end
+%% Figures for simulation
+% figure()
+% subplot(2,1,1)
+% plot(linspace(1,length(x),length(x)),x(3,:)+Tamb,'LineWidth',1)
+% hold on
+% plot(linspace(1,length(x),length(x)),x(4,:)+Tamb,'LineWidth',1)
+% plot(linspace(1,length(r),length(r)),r(1,:)+Tamb,'k')
+% %plot(linspace(1,length(r),length(r)),r(2,:)+Tamb,'k
+% legend('T1','T2');
+% ylim([20 45])
+% xlim([0 500])
+% 
+% subplot(2,1,2)
+% plot(linspace(1,length(u),length(u)),u(1,:),'LineWidth',1)
+% hold on
+% plot(linspace(1,length(u),length(u)),u(2,:),'LineWidth',1)
+% legend('U1','U2');
+% xlim([0 500])
+
 
 %%
 Tamb = 21;
-r = [19;19];
+% r = [19;19];
 tclab;
 x(:,1) = [T1C()-Tamb; T2C()-Tamb; T1C()-Tamb; T2C()-Tamb];
 %x(:,1) = [0; 0; 0; 0];
@@ -126,20 +188,26 @@ ht1 = 0;
 ht2 = 0;
 h1(ht1);
 h2(ht2);
+%z(:,1) = [x(3,1);x(4,1)];
 
-%Ki =
 
-for i = 1:1500  %x1 sec (Ts)
+for i = 1:2000  %x1 sec (Ts)
     tic;
-    if i <= 500
-        r = [19;19]; %40 degree
-    elseif (i > 500) && (i <= 1000);
-        r = [14;14]; %35 degree
-    else 
-        r = [24;24]; %45 degree
-    end
+%     if i <= 500
+%         r = [19;19]; %40 degree
+%     elseif (i > 500) && (i <= 1000);
+%         r = [14;14]; %35 degree
+%     else 
+%         r = [24;24]; %45 degree
+%     end    
+    t1 = T1C();
+    t2 = T2C();
+    y = [t1-Tamb; t2-Tamb];
+    y_hat(:,i) = Cd*x(:,i);
+    %z(:,i) = y_hat(:,i) - r(:,i);
+
     
-    u(:,i) = Kr*r - K*x(:,i); % - Ki*z(:,i);
+    u(:,i) = Kr*r(:,i) - K*x(:,i); % - [2 1; 1 2]*z(:,i); % - Ki*z(:,i);
     
     if u(1,i) <= 0
         u(1,i) = 0;
@@ -152,12 +220,7 @@ for i = 1:1500  %x1 sec (Ts)
     ht2 = u(2,i);
     h1(ht1);
     h2(ht2);
-    t1 = T1C();
-    t2 = T2C();
-    
-    y = [t1-Tamb; t2-Tamb];
-    y_hat(:,i) = Cd*x(:,i);
-    z(:,i) = y_hat(:,1) - r;
+  
     
     x(:,i+1) = Ad*x(:,i) + Bd*u(:,i) + L*(y - y_hat(:,i));
     
@@ -196,21 +259,26 @@ h2(0);
 %%
 figure
 subplot(2,1,1)
-plot(linspace(1,length(x),length(x)),[ones(1,500)*19, ones(1,500)*14, ones(1,501)*24],'k')
+plot(linspace(1,length(r),length(r)),r(1,:)+Tamb,'k')
 hold on
-plot(linspace(1,length(t1s),length(t1s)),t1s-Tamb,'Color','y');
-plot(linspace(1,length(x),length(x)),x(3,:),'LineWidth',1,'Color','b');
-plot(linspace(1,length(t2s),length(t2s)),t2s-Tamb,'Color','g');
-plot(linspace(1,length(x),length(x)),x(4,:),'LineWidth',1,'Color','r');
-legend('Ref','T1','T1 observed','T2','T2 observed');
+plot(linspace(1,length(r),length(r)),r(2,:)+Tamb,'k')
+plot(linspace(1,length(t1s),length(t1s)),t1s,'Color','y');
+plot(linspace(1,length(x),length(x)),x(3,:)+Tamb,'LineWidth',1,'Color','b');
+plot(linspace(1,length(t2s),length(t2s)),t2s,'Color','g');
+plot(linspace(1,length(x),length(x)),x(4,:)+Tamb,'LineWidth',1,'Color','r');
+legend('Ref','Ref','T1','T1 observed','T2','T2 observed');
 % plot(linspace(1,length(x),length(x)),x(1,:));
 % plot(linspace(1,length(x),length(x)),x(2,:));
-ylabel('Temperature - 21deg (deg)')
+ylabel('Temperature (deg)')
 xlabel('Time (s)')
 xlim([0 length(u)])
 
 
-subplot(2,1,2)
+subplot(2,1,2)% load('referencesin2.mat')
+% %load('referencesin3.mat')
+% %ref = [ref ref]'-Tamb; %average at 30 deg
+% r = [ref ref]'-Tamb+5; %average at 35 deg
+
 plot(linspace(1,length(u),length(u)),u(1,:),'LineWidth',1);
 hold on
 plot(linspace(1,length(u),length(u)),u(2,:),'LineWidth',1);
