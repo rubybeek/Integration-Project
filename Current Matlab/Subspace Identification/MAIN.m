@@ -26,115 +26,103 @@ dataset2.InputName  = {'Input Sensor 1';'Input Sensor 2'};
 dataset2.OutputName = {'Output Sensor 1';'Output Sensor 2'};
 
 %% subspace identification Verhaegen
-% yold = data1(:,2:3);
-% uold = data1(:,4:5);
-% N = length(yold);
-% 
-% y = zeros(2*N,1);
-% u = zeros(2*N,1);
-% 
-% for i = 1:N
-%     y(2*i-1:2*i) = yold(i,:)';
-%     u(2*i-1:2*i) = uold(i,:)';
-% end
+yold = data1(:,2:3);
+uold = data1(:,4:5);
+N = length(yold);
+
+y = zeros(2*N,1);
+u = zeros(2*N,1);
+
+for i = 1:N
+    y(2*i-1:2*i) = yold(i,:)';
+    u(2*i-1:2*i) = uold(i,:)';
+end
 
 %% Subspace identificaton using Filtering book / RQ factorization / Verhaegen
 
-% %for i = 1:9
-% n = 10; %n = 1+i;
-% s = n*4;
-% 
-% [At, Bt, Ct, Dt, x0t, S, theta,Phi_N] = mysubid(y,u,s,n,yold,N);
-% 
-% Ts = 1;
-% sysd = ss(At,Bt,Ct,Dt,Ts);
-% sysc = d2c(sysd);
-% 
-% figure()
-% compare(dataset2,sysd);
-% title('Subspace identification using RQ Factorization')
-% %end
+%for i = 1:9
+n = 10; %n = 1+i;
+s = n*4;
+
+[At, Bt, Ct, Dt, x0t, S, theta,Phi_N] = mysubid(y,u,s,n,yold,N);
+
+Ts = 1;
+sysd = ss(At,Bt,Ct,Dt,Ts);
+sysc = d2c(sysd);
+
+figure()
+compare(dataset2,sysd);
+title('Subspace identification using RQ Factorization')
+%end
 
 %% Right choices
-% ssest_model1 = ssest(dataset1,6,'N4Weight','MOESP');
-% ssest_model2 = ssest(dataset1,6);
-% n4sid_model = n4sid(dataset1,5);
-% Verhaegen_model = sysd;
-%  
-% figure(1)
-% compare(dataset2,ssest_model1,ssest_model2,n4sid_model,Verhaegen_model); %,'LineWidth',1);
+ssest_model = ssest(dataset1,6);
+ssest_model = c2d(ssest_model,1);
+n4sid_model = n4sid(dataset1,5);
+Verhaegen_model = sysd;
+ 
+figure(1)
+compare(dataset2,ssest_model,n4sid_model,Verhaegen_model,'LineWidth',1);
 
-%% save
 %save('Subspacemodels','ssest_model','n4sid_model','Verhaegen_model')
 
-%%
+%% Subspace identification using ssest
+% MIMO2 = ssest(dataset1,2);
+% MIMO2 = c2d(MIMO2,1);
+% MIMO3 = ssest(dataset1,3);
+% MIMO3 = c2d(MIMO3,1);
+% MIMO4 = ssest(dataset1,4);
+% MIMO4 = c2d(MIMO4,1);
+% MIMO5 = ssest(dataset1,5);
+% MIMO5 = c2d(MIMO5,1);
+% MIMO6 = ssest(dataset1,6);
+% MIMO6 = c2d(MIMO6,1);
+% MIMO7 = ssest(dataset1,7);
+% MIMO7 = c2d(MIMO7,1);
+% MIMO8 = ssest(dataset1,8);
+% MIMO8 = c2d(MIMO8,1);
+% MIMO9 = ssest(dataset1,9);
+% MIMO9 = c2d(MIM09,1);
+% MIMO10 = ssest(dataset1,10);
+% MIMO10 = c2d(MIMO10,1);
+% 
+% figure(4)
+% compare(dataset2,MIMO1);
+% title('Subspace identification using ssest, 2nd order')
+% 
+% figure(5)
+% compare(dataset2,MIMO2);
+% title('Subspace identification using ssest, 3th order')
+% 
+% figure(6)
+% compare(dataset2,MIMO3);
+% title('Subspace identification using ssest, 4th order')
+% 
+% figure(7)
+% compare(dataset2,MIMO4);
+% title('Subspace identification using ssest, 5th order')
+% 
+% figure(8)
+% compare(dataset2,MIMO5);
+% title('Subspace identification using ssest, 6th order')
+% 
+% figure(9)
+% compare(dataset2,MIMO6);
+% title('Subspace identification using ssest, 7th order')
+% 
+% figure(10)
+% compare(dataset2,MIMO7);
+% title('Subspace identification using ssest, 8th order')
+% 
+% figure(11)
+% compare(dataset2,MIMO8);
+% title('Subspace identification using ssest, 9th order')
+% 
+% figure(12)
+% compare(dataset2,MIMO9);
+% title('Subspace identification using ssest, 10th order')
 
-% figure
-% step(ssest_model)
-% hold on
-% step(n4sid_model)
-% step(Verhaegen_model)
-
-%% Subspace identification using ssest : order estimation
-MIMO1 = ssest(dataset1,2,'N4Weight','MOESP');
-MIMO2 = ssest(dataset1,3,'N4Weight','MOESP');
-MIMO3 = ssest(dataset1,4,'N4Weight','MOESP');
-MIMO4 = ssest(dataset1,5,'N4Weight','MOESP');
-MIMO5 = ssest(dataset1,6,'N4Weight','MOESP');
-MIMO6 = ssest(dataset1,7,'N4Weight','MOESP');
-MIMO7 = ssest(dataset1,8,'N4Weight','MOESP');
-MIMO8 = ssest(dataset1,9,'N4Weight','MOESP');
-MIMO9 = ssest(dataset1,10,'N4Weight','MOESP');
-
-figure(4)
-[~, FIT2, ~] = compare(dataset2,MIMO1);
-title('Subspace identification using ssest, 2nd order')
-
-figure(5)
-[~, FIT3, ~] = compare(dataset2,MIMO2);
-title('Subspace identification using ssest, 3th order')
-
-figure(6)
-[~, FIT4, ~] = compare(dataset2,MIMO3);
-title('Subspace identification using ssest, 4th order')
-
-figure(7)
-[~, FIT5, ~] = compare(dataset2,MIMO4);
-title('Subspace identification using ssest, 5th order')
-
-figure(8)
-[~, FIT6, ~] = compare(dataset2,MIMO5);
-title('Subspace identification using ssest, 6th order')
-
-figure(9)
-[~, FIT7, ~] = compare(dataset2,MIMO6);
-title('Subspace identification using ssest, 7th order')
-
-figure(10)
-[~, FIT8, ~] = compare(dataset2,MIMO7);
-title('Subspace identification using ssest, 8th order')
-
-figure(11)
-[~, FIT9, ~] = compare(dataset2,MIMO8);
-title('Subspace identification using ssest, 9th order')
-
-figure(12)
-[~, FIT10, ~] = compare(dataset2,MIMO9);
-title('Subspace identification using ssest, 10th order')
-
-%%
-FIT = [FIT2,FIT3,FIT4,FIT5,FIT6,FIT7,FIT8,FIT9,FIT10];
-figure()
-scatter(linspace(2,10,9),FIT(1,:));
-hold on
-scatter(linspace(2,10,9),FIT(2,:));
-legend('Fit sensor 1','Fit sensor 1')
-xlabel('model order')
-grid('ON')
-xlim([1 10])
-ylabel('VAF [%]')
-
-%% Subspace identification using N4SID: order estimation
+%% Subspace identification using N4SID
 % MIMO10 = n4sid(dataset1,2);
 % MIMO11 = n4sid(dataset1,3);
 % MIMO12 = n4sid(dataset1,4);
@@ -146,49 +134,37 @@ ylabel('VAF [%]')
 % MIMO18 = n4sid(dataset1,10);
 % 
 % figure(13)
-% [~, FIT2, ~] = compare(dataset2,MIMO10);
+% compare(dataset2,MIMO10);
 % title('Subspace identification using n4sid, 2nd order')
 % 
 % figure(14)
-% [~, FIT3, ~] =compare(dataset2,MIMO11);
+% compare(dataset2,MIMO11);
 % title('Subspace identification using n4sid, 3th order')
 % 
 % figure(15)
-% [~, FIT4, ~] =compare(dataset2,MIMO12);
+% compare(dataset2,MIMO12);
 % title('Subspace identification using n4sid, 4th order')
 % 
 % figure(16)
-% [~, FIT5, ~] =compare(dataset2,MIMO13);
+% compare(dataset2,MIMO13);
 % title('Subspace identification using n4sid, 5th order')
 % 
 % figure(17)
-% [~, FIT6, ~] =compare(dataset2,MIMO14);
+% compare(dataset2,MIMO14);
 % title('Subspace identification using n4sid, 6th order')
 % 
 % figure(18)
-% [~, FIT7, ~] =compare(dataset2,MIMO15);
+% compare(dataset2,MIMO15);
 % title('Subspace identification using n4sid, 7th order')
 % 
 % figure(19)
-% [~, FIT8, ~] =compare(dataset2,MIMO16);
+% compare(dataset2,MIMO16);
 % title('Subspace identification using n4sid, 8th order')
 % 
 % figure(20)
-% [~, FIT9, ~] =compare(dataset2,MIMO17);
+% compare(dataset2,MIMO17);
 % title('Subspace identification using n4sid, 9th order')
 % 
 % figure(21)
-% [~, FIT10, ~] =compare(dataset2,MIMO18);
+% compare(dataset2,MIMO18);
 % title('Subspace identification using n4sid, 10th order')
-% 
-% %%
-% FIT = [FIT2,FIT3,FIT4,FIT5,FIT6,FIT7,FIT8,FIT9,FIT10];
-% figure()
-% scatter(linspace(2,10,9),FIT(1,:));
-% hold on
-% scatter(linspace(2,10,9),FIT(2,:));
-% legend('Fit sensor 1','Fit sensor 2')
-% xlabel('model order')
-% grid('ON')
-% xlim([1 10])
-% ylabel('VAF [%]')

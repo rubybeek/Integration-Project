@@ -1,7 +1,5 @@
 clearvars
-% close all
-
-
+close all
 
 load('MIMO_para2')
 load('data3.mat')
@@ -96,6 +94,7 @@ controller = optimizer(constraints, objective, options, parameters_in,{[u{:}],[x
 % r_input3 = repmat(24,2,500+2*dim.N); %45 deg
 % ref = [r_input1 r_input2 r_input3];
 
+
 % switching ref, different per sensor
 % r_input1(1,:) = repmat(19,1,400); %40 deg
 % r_input1(2,:) = [repmat(10,1,300),repmat(14,1,100)]; %40 deg
@@ -105,243 +104,235 @@ controller = optimizer(constraints, objective, options, parameters_in,{[u{:}],[x
 % r_input3(2,:) = repmat(19,1,400+2*dim.N); %45 deg
 % ref = [r_input1 r_input2 r_input3];
 
-% % sinus wave reference
-%load('referencesin.mat') %period way to short
-% load('referencesin2.mat')
-%load('referencesin3.mat')
-%ref = [ref ref]'-Tamb; %average at 30 deg
-% ref = [ref ref]'-Tamb+5; %average at 35 deg
+% sinus wave reference
+load('referencesin3.mat') %period way to short
+ref = ref'-Tamb;
+ref = [ref;ref];
+% 
 % sine1 = dsp.SineWave(2,10);
 % sine1.SamplesPerFrame = 1000;
 % y = sine1();
 % r_input(1,:) = 3*y + 20;
 % r_input(2,:) = 3*y + 20;
-% ref = r_input';
+% ref = r_input;
 
-r_input1 = zeros(2,1500+dim.N*2);
-r_input1(1,:) = [repmat(19,1,1500+dim.N*2)]; %40 deg
-r_input1(2,:) = [repmat(19,1,300),repmat(24,1,300),repmat(14,1,300),repmat(24,1,300),repmat(14,1,300+dim.N*2)]; %40 deg
-ref = [r_input1];
-
-% figure()
-% plot(linspace(1,length(ref),length(ref)),ref(1,1:end)+Tamb,'LineWidth',1)
-% hold on
-% %plot(linspace(1,length(ref),length(ref)),ref(2,1:end)+Tamb,'LineWidth',1)
-% legend('Ref')
-% xlabel('Time (s)')
-% ylabel('Temperature (Deg)')
+figure()
+plot(linspace(1,length(ref),length(ref)),ref(1,1:end)+Tamb,'LineWidth',1)
+hold on
+%plot(linspace(1,length(ref),length(ref)),ref(2,1:end)+Tamb,'LineWidth',1)
+legend('Ref')
+xlabel('Time (s)')
+ylabel('Temperature (Deg)')
 
 %% Observer
-% Rlqr = eye(2)*1E3;
-% %Qlqr = eye(4);
-% Qlqr = [80 0 0 0; 0 80 0 0; 0 0 40 0; 0 0 0 40];
+% % Rlqr = eye(2)*1E3;
+% % %Qlqr = eye(4);
+% % Qlqr = [80 0 0 0; 0 80 0 0; 0 0 40 0; 0 0 0 40];
+% % 
+% % %[Kest,L,P2] = kalman(lin_discrete,[],[],[]);
+% % [K,S,CLP] = dlqr(sys.A',sys.C',Qlqr,Rlqr,[]);
 % 
-% %[Kest,L,P2] = kalman(lin_discrete,[],[],[]);
-% [K,S,CLP] = dlqr(sys.A',sys.C',Qlqr,Rlqr,[]);
-
-Qkal = [40 0; 0 40];
-Rkal =eye(2)*(1E-2)*5;
-Nkal =eye(2);
-
-[KEST,L,Pkal] = kalman(lin_discrete,Qkal,Rkal,Nkal);
+% Qkal = [40 0; 0 40];
+% Rkal =eye(2)*(1E-2)*5;
+% Nkal =eye(2);
+% 
+% [KEST,L,Pkal] = kalman(lin_discrete,Qkal,Rkal,Nkal);
 
 %% Running controller on TClab
 
-tclab;
+% tclab;
+% clf
+% hold on
+% 
+% x0 = [T1C()-Tamb; T2C()-Tamb; T1C()-Tamb; T2C()-Tamb];
+% x = x0;
+% implementedU = [];
+% implementedUtotal = [];
+% X0 = [];
+% 
+% ht1 = 0;
+% ht2 = 0;
+% h1(ht1);
+% h2(ht2);
+% 
+% h1s = [];
+% h2s = [];
+% t1s = [];
+% t2s = [];
+% OUTPUT = [];
+% 
+% for i = 1:1000
+%    tic ;
+%    r_input = ref(:,i:(i+dim.N)); 
+%    [solution,~] = controller{x,r_input};  
+%    U = solution{1};
+%    X = solution{2};
+%   
+%     ht1 = U(1,1);
+%     ht2 = U(2,1);
+%     h1(ht1);
+%     h2(ht2);
+%     
+%     t1 = T1C();
+%     t2 = T2C();
+%   
+%     %x = sys.A*x + sys.B*U(:,1);
+%     y = [t1-Tamb; t2-Tamb];
+%     y_hat = sys.C*x;
+%     %y = y_hat(:,1);
+%     OUTPUT = [OUTPUT x];
+%     x = sys.A*x + sys.B*U(:,1)+ L*(y - y_hat);
+%     
+% %   stairs(i:i+length(U)-1,U(1,:)','r')
+% %   hold on
+% %   stairs(i:i+length(U)-1,U(2,:)','b')
+%   
+%   implementedUtotal = [implementedUtotal U(:,1)];
+%   X0 = [X0 X(:,1)];
+%   
+%     h1s = [h1s,ht1];
+%     h2s = [h2s,ht2];
+%     t1s = [t1s,t1];
+%     t2s = [t2s,t2];
+%     
+%     n = length(t1s);
+%     time = linspace(0,(n+1),n);
+%     
+%     clf
+%     subplot(2,1,1)
+%     plot(time,t1s,'b.','MarkerSize',10);
+%     hold on
+%     plot(time,t2s,'r.','MarkerSize',10);
+%     ylabel('Temperature (degC)')
+%     legend('Temperature 1','Temperature 2','Location','NorthWest')
+%     
+%     subplot(2,1,2)
+%     plot(time,h1s,'b-','LineWidth',2);
+%     hold on
+%     plot(time,h2s,'r--','LineWidth',2);
+%     ylabel('Heater (0-5.5 V)')
+%     xlabel('Time (sec)')
+%     legend('Heater 1','Heater 2','Location','NorthWest')
+%     drawnow;
+%     
+%     t = toc;
+%     pause(max(0.01,1.0-t))
+% end
+% toc
+% h1(0);
+% h2(0);
+% display('Heaters off')
+% 
+% %%
+% figure(2)
+% stairs(implementedUtotal(1,:),'p') %implementedUtotal
+% hold on
+% stairs(implementedUtotal(2,:),'g') %implementedUtotal
+% T = [t1s;t2s] - ones(2,length(t1s))*Tamb;
+% %%
+% figure(3)
+% subplot(2,1,1)
+% plot(linspace(1,length(T),length(T)),ref(1,1:length(T))+Tamb,'Color','k')
+% hold on
+% %plot(linspace(1,length(T),length(T)),ref(2,1:length(T))+Tamb,'Color','k')
+% plot(linspace(1,length(T),length(T)),T(1,:)+Tamb,'Color','g')
+% plot(linspace(1,length(T),length(T)),T(2,:)+Tamb,'Color','y')
+% plot(linspace(1,length(T),length(T)),OUTPUT(3,:)+Tamb,'LineWidth',1,'Color','r')
+% plot(linspace(1,length(T),length(T)),OUTPUT(4,:)+Tamb,'LineWidth',1,'Color','b')
+% legend('Ref','T1','T2','observed T1','observed T2')
+% ylabel('Temperature')
+% xlabel('Time (s)')
+% xlim([0 length(implementedUtotal)])
+% ylim([15 38])
+% 
+% subplot(2,1,2)
+% stairs(implementedUtotal(1,:),'r','LineWidth',1) %implementedUtotal
+% hold on
+% stairs(implementedUtotal(2,:),'b','LineWidth',1) %implementedUtotal
+% legend('U1','U2');
+% ylabel('Input (%)')
+% xlabel('Time (s)')
+
+%% to save data
+%data = [linspace(1,length(t1s),length(t1s))' t1s' t2s' implementedUtotal'];
+%save('dataMPC2','data');
+
+%% Running controller on model
+
 clf
 hold on
 
-x0 = [T1C()-Tamb; T2C()-Tamb; T1C()-Tamb; T2C()-Tamb];
 x = x0;
 implementedU = [];
 implementedUtotal = [];
 X0 = [];
 
-ht1 = 0;
-ht2 = 0;
-h1(ht1);
-h2(ht2);
-
-h1s = [];
-h2s = [];
-t1s = [];
-t2s = [];
-OUTPUT = [];
-
-for i = 1:1500
-   tic ;
-   r_input = ref(:,i:(i+dim.N)); 
-   [solution,~] = controller{x,r_input};  
-   U = solution{1};
-   X = solution{2};
-  
-    ht1 = U(1,1);
-    ht2 = U(2,1);
-    h1(ht1);
-    h2(ht2);
-    
-    t1 = T1C();
-    t2 = T2C();
-  
-    %x = sys.A*x + sys.B*U(:,1);
-    y = [t1-Tamb; t2-Tamb];
-    y_hat = sys.C*x;
-    %y = y_hat(:,1);
-    OUTPUT = [OUTPUT x];
-    x = sys.A*x + sys.B*U(:,1)+ L*(y - y_hat);
-    
-%   stairs(i:i+length(U)-1,U(1,:)','r')
-%   hold on
-%   stairs(i:i+length(U)-1,U(2,:)','b')
-  
+for i = 1:1500 
+  r_input = ref(:,i:(i+dim.N)); 
+  [solution,~] = controller{x,r_input};  
+  U = solution{1};
+  X = solution{2};
+  stairs(i:i+length(U)-1,U(1,:)','r')
+  hold on
+  stairs(i:i+length(U)-1,U(2,:)','b')
+  x = sys.A*x + sys.B*U(:,1);
+  pause(0.05)
+  stairs(i:i+length(U)-1,U(1,:)','k')
   implementedUtotal = [implementedUtotal U(:,1)];
   X0 = [X0 X(:,1)];
-  
-    h1s = [h1s,ht1];
-    h2s = [h2s,ht2];
-    t1s = [t1s,t1];
-    t2s = [t2s,t2];
-    
-    n = length(t1s);
-    time = linspace(0,(n+1),n);
-    
-    clf
-    subplot(2,1,1)
-    plot(time,t1s,'b.','MarkerSize',10);
-    hold on
-    plot(time,t2s,'r.','MarkerSize',10);
-    ylabel('Temperature (degC)')
-    legend('Temperature 1','Temperature 2','Location','NorthWest')
-    
-    subplot(2,1,2)
-    plot(time,h1s,'b-','LineWidth',2);
-    hold on
-    plot(time,h2s,'r--','LineWidth',2);
-    ylabel('Heater (0-5.5 V)')
-    xlabel('Time (sec)')
-    legend('Heater 1','Heater 2','Location','NorthWest')
-    drawnow;
-    
-    t = toc;
-    pause(max(0.01,1.0-t))
 end
-
-h1(0);
-h2(0);
-display('Heaters off')
 
 %%
 figure(2)
-stairs(implementedUtotal(1,:),'p') %implementedUtotal
+stairs(implementedUtotal(1,:),'color','r','lineWidth',1) %implementedUtotal
 hold on
-stairs(implementedUtotal(2,:),'g') %implementedUtotal
-T = [t1s;t2s] - ones(2,length(t1s))*Tamb;
-%%
-figure(3)
-subplot(2,1,1)
-plot(linspace(1,length(T),length(T)),ref(1,1:length(T))+Tamb,'Color','k')
-hold on
-plot(linspace(1,length(T),length(T)),ref(2,1:length(T))+Tamb,'Color','k')
-plot(linspace(1,length(T),length(T)),T(1,:)+Tamb,'Color','g')
-plot(linspace(1,length(T),length(T)),T(2,:)+Tamb,'Color','y')
-plot(linspace(1,length(T),length(T)),OUTPUT(3,:)+Tamb,'LineWidth',1,'Color','r')
-plot(linspace(1,length(T),length(T)),OUTPUT(4,:)+Tamb,'LineWidth',1,'Color','b')
-legend('Ref','Ref','T1','T2','observed T1','observed T2')
-ylabel('Temperature [Deg]')
-xlabel('Time (s)')
-xlim([0 length(implementedUtotal)])
-%ylim([15 38])
-
-subplot(2,1,2)
-stairs(implementedUtotal(1,:),'r','LineWidth',1) %implementedUtotal
-hold on
-stairs(implementedUtotal(2,:),'b','LineWidth',1) %implementedUtotal
-legend('U1','U2');
-ylabel('Input (%)')
-xlabel('Time (s)')
-
-%% to save data
-% data = [linspace(1,length(t1s),length(t1s))' t1s' t2s' implementedUtotal'];
-% save('dataMPC3','data');
-
-%% Running controller on model
-% 
-% clf
-% hold on
-% 
-% x = x0;
-% implementedU = [];
-% implementedUtotal = [];
-% X0 = [];
-% XX = [];
-% 
-% for i = 1:600 
-%   r_input = ref(:,i:(i+dim.N)); 
-%   [solution,~] = controller{x,r_input};  
-%   U = solution{1};
-%   X = solution{2};
-% %   stairs(i:i+length(U)-1,U(1,:)','r')
-%  % hold on
-%   XX = [XX, x];
-% %   stairs(i:i+length(U)-1,U(2,:)','b')
-%   x = sys.A*x+ sys.B*U(:,1);
-%  % pause(0.05)
-% %   stairs(i:i+length(U)-1,U(1,:)','k')
-%   implementedUtotal = [implementedUtotal U(:,1)];
-%   X0 = [X0 X(:,1)];
-% end
-
-%%
-% figure(2)
-% stairs(implementedUtotal(1,:),'color','r','lineWidth',1) %implementedUtotal
-% hold on
-% stairs(implementedUtotal(2,:),'color','b','lineWidth',1) %implementedUtotal
-% legend('Input heater 1','Input heater 2')
-% xlabel('Time [sec]')
-% ylabel('Power Input [%]')
-% set(gca,'FontSize',14)
-
-%%
-% figure()
-% subplot(2,1,1)
-% 
-% hold on
-% plot(linspace(1,length(XX),length(XX)),XX(3,:)+Tamb,'LineWidth',1)
-% plot(linspace(1,length(XX),length(XX)),XX(4,:)+Tamb,'LineWidth',1)
-% plot(linspace(1,length(ref),length(ref)),ref(1,:)+Tamb,'k')
-% ylim([20 45])
-% legend('T1 MPC','T2 MPC');
-% xlim([0 500])
-% 
-% subplot(2,1,2)
-% hold on
-% plot(linspace(1,length(implementedUtotal),length(implementedUtotal)),implementedUtotal(1,:),'LineWidth',1)
-% plot(linspace(1,length(implementedUtotal),length(implementedUtotal)),implementedUtotal(2,:),'LineWidth',1)
-% legend('U1 MPC','U2 MPC');
-% xlim([0 500])
+stairs(implementedUtotal(2,:),'color','b','lineWidth',1) %implementedUtotal
+legend('Input heater 1','Input heater 2')
+xlabel('Time [sec]')
+ylabel('Power Input [%]')
+set(gca,'FontSize',14)
+xlim([1 1500])
 
 %% Check 
 
-% x_d = x0;
-% for i = 1:500
-%     x_d(:,i+1) = sys.A*x_d(:,i)+sys.B*implementedUtotal(:,i);
-% end
-% 
-% figure(3)
-% plot(linspace(1,length(x_d),length(x_d)),x_d+20,'lineWidth',1)
-% legend('Temperature heater 1','Temperature heater 2','Temperature sensor 1','Temperature sensor 2','Location','northwest')
-% xlabel('Time [sec]')
-% ylabel('Temperature [Celsius]')
-% set(gca,'FontSize',14)
-% 
-% figure(4)
-% plot(linspace(1,length(x_d),length(x_d)),x_d(3,:)+20,'color','r','lineWidth',1)
-% hold on
-% plot(linspace(1,length(x_d),length(x_d)),x_d(4,:)+20,'color','b','lineWidth',1)
-% legend('Temperature sensor 1','Temperature sensor 2','Location','northwest')
-% xlabel('Time [sec]')
-% ylabel('Temperature [Celsius]')
-% set(gca,'FontSize',14)
+x_d = x0;
+for i = 1:1500
+    x_d(:,i+1) = sys.A*x_d(:,i)+sys.B*implementedUtotal(:,i);
+end
+
+figure(3)
+plot(linspace(1,length(x_d),length(x_d)),x_d+Tamb,'lineWidth',1)
+legend('Temperature heater 1','Temperature heater 2','Temperature sensor 1','Temperature sensor 2','Location','northwest')
+xlabel('Time [sec]')
+ylabel('Temperature [Celsius]')
+set(gca,'FontSize',14)
+xlim([1 1500])
+
+%%
+figure(4)
+plot(linspace(1,length(x_d),length(x_d)),x_d(3,:)+Tamb,'color','r','lineWidth',1)
+xlim([1 1500])
+hold on
+plot(linspace(1,length(x_d),length(x_d)),x_d(4,:)+Tamb,'color','b','lineWidth',1)
+plot(linspace(1,length(ref),length(ref)),ref(:,1:end)+Tamb,'LineWidth',1,'color','k')
+legend('Temperature sensor 1','Temperature sensor 2','Reference','Location','southeast')
+xlabel('Time [sec]')
+ylabel('Temperature [Celsius]')
+set(gca,'FontSize',14)
+
+
+
+
+figure(5)
+plot(linspace(1,length(ref),length(ref)),ref(1,1:end)+Tamb,'LineWidth',1,'color','g')
+
+%%
+
+
+plot(linspace(1,length(ref),length(ref)),ref(2,1:end)+Tamb,'LineWidth',1)
+
+xlabel('Time (s)')
+ylabel('Temperature (Deg)')
 
 
 
