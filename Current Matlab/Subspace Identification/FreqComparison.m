@@ -47,20 +47,68 @@ dataset2.OutputName = {'Output Sensor 1';'Output Sensor 2'};
 % legend('S','T')
 
 %% residual analysis
-figure(1)
-resid(dataset2,lin_statespace)
-figure(2)
-resid(dataset2,Verhaegen_model)
-figure(3)
-resid(dataset2,ssest_model)
-figure(4)
-resid(dataset2,n4sid_model)
-
-figure(5)
-resid(dataset2,lin_statespace,ssest_model,n4sid_model,Verhaegen_model)
+% figure(1)
+% resid(dataset2,lin_statespace)
+% figure(2)
+% resid(dataset2,Verhaegen_model)
+% figure(3)
+% resid(dataset2,ssest_model)
+% figure(4)
+% resid(dataset2,n4sid_model)
+% 
+% figure(5)
+% resid(dataset2,lin_statespace,ssest_model,n4sid_model,Verhaegen_model)
 
 %% compare Freq data
 datafft = fft(dataset2);
 
 figure(6)
-compare(datafft,lin_statespace,ssest_model,n4sid_model,Verhaegen_model)
+compare(datafft,lin_statespace,Verhaegen_model,ssest_model,n4sid_model)
+figure(5)
+compare(datafft,lin_statespace)
+
+% figure(4)
+% compare(datafft,ssest_model)
+% figure(3)
+% compare(datafft,n4sid_model)
+% figure(2)
+% compare(datafft,Verhaegen_model)
+
+%%
+tf_parest = tf(lin_statespace);
+tf_ssest = tf(ssest_model);
+tf_n4sid = tf(n4sid_model);
+tf_Verhaegen = tf(Verhaegen_model);
+
+figure()
+bode(tf_parest)
+hold on
+bode(tf_ssest)
+bode(tf_n4sid)
+bode(tf_Verhaegen)
+legend('para','ssest','n4sid','ver')
+
+%%
+
+figure()
+step(tf_parest)
+
+figure()
+step(tf_ssest)
+figure()
+step(tf_n4sid)
+figure()
+step(tf_Verhaegen)
+legend('para','ssest','n4sid','ver')
+
+%%
+
+figure()
+pzmap(tf_parest)
+
+figure()
+pzmap(tf_ssest)
+figure()
+pzmap(tf_n4sid)
+figure()
+pzmap(tf_Verhaegen)

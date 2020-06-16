@@ -1,5 +1,7 @@
 clearvars
-close all
+% close all
+
+
 
 load('MIMO_para2')
 load('data3.mat')
@@ -104,14 +106,22 @@ controller = optimizer(constraints, objective, options, parameters_in,{[u{:}],[x
 % ref = [r_input1 r_input2 r_input3];
 
 % % sinus wave reference
-load('referencesin.mat') %period way to short
-ref = [ref ref]'-Tamb;
+%load('referencesin.mat') %period way to short
+% load('referencesin2.mat')
+%load('referencesin3.mat')
+%ref = [ref ref]'-Tamb; %average at 30 deg
+% ref = [ref ref]'-Tamb+5; %average at 35 deg
 % sine1 = dsp.SineWave(2,10);
 % sine1.SamplesPerFrame = 1000;
 % y = sine1();
 % r_input(1,:) = 3*y + 20;
 % r_input(2,:) = 3*y + 20;
 % ref = r_input';
+
+r_input1 = zeros(2,1500+dim.N*2);
+r_input1(1,:) = [repmat(19,1,1500+dim.N*2)]; %40 deg
+r_input1(2,:) = [repmat(19,1,300),repmat(24,1,300),repmat(14,1,300),repmat(24,1,300),repmat(14,1,300+dim.N*2)]; %40 deg
+ref = [r_input1];
 
 % figure()
 % plot(linspace(1,length(ref),length(ref)),ref(1,1:end)+Tamb,'LineWidth',1)
@@ -158,7 +168,7 @@ t1s = [];
 t2s = [];
 OUTPUT = [];
 
-for i = 1:1000
+for i = 1:1500
    tic ;
    r_input = ref(:,i:(i+dim.N)); 
    [solution,~] = controller{x,r_input};  
@@ -215,7 +225,7 @@ for i = 1:1000
     t = toc;
     pause(max(0.01,1.0-t))
 end
-toc
+
 h1(0);
 h2(0);
 display('Heaters off')
@@ -231,16 +241,16 @@ figure(3)
 subplot(2,1,1)
 plot(linspace(1,length(T),length(T)),ref(1,1:length(T))+Tamb,'Color','k')
 hold on
-%plot(linspace(1,length(T),length(T)),ref(2,1:length(T))+Tamb,'Color','k')
+plot(linspace(1,length(T),length(T)),ref(2,1:length(T))+Tamb,'Color','k')
 plot(linspace(1,length(T),length(T)),T(1,:)+Tamb,'Color','g')
 plot(linspace(1,length(T),length(T)),T(2,:)+Tamb,'Color','y')
 plot(linspace(1,length(T),length(T)),OUTPUT(3,:)+Tamb,'LineWidth',1,'Color','r')
 plot(linspace(1,length(T),length(T)),OUTPUT(4,:)+Tamb,'LineWidth',1,'Color','b')
-legend('Ref','T1','T2','observed T1','observed T2')
-ylabel('Temperature')
+legend('Ref','Ref','T1','T2','observed T1','observed T2')
+ylabel('Temperature [Deg]')
 xlabel('Time (s)')
 xlim([0 length(implementedUtotal)])
-ylim([15 38])
+%ylim([15 38])
 
 subplot(2,1,2)
 stairs(implementedUtotal(1,:),'r','LineWidth',1) %implementedUtotal
@@ -251,11 +261,11 @@ ylabel('Input (%)')
 xlabel('Time (s)')
 
 %% to save data
-%data = [linspace(1,length(t1s),length(t1s))' t1s' t2s' implementedUtotal'];
-%save('dataMPC2','data');
+% data = [linspace(1,length(t1s),length(t1s))' t1s' t2s' implementedUtotal'];
+% save('dataMPC3','data');
 
 %% Running controller on model
-
+% 
 % clf
 % hold on
 % 
@@ -263,32 +273,52 @@ xlabel('Time (s)')
 % implementedU = [];
 % implementedUtotal = [];
 % X0 = [];
+% XX = [];
 % 
-% for i = 1:500 
+% for i = 1:600 
 %   r_input = ref(:,i:(i+dim.N)); 
 %   [solution,~] = controller{x,r_input};  
 %   U = solution{1};
 %   X = solution{2};
-%   stairs(i:i+length(U)-1,U(1,:)','r')
-%   hold on
-%   stairs(i:i+length(U)-1,U(2,:)','b')
-%   x = sys.A*x + sys.B*U(:,1);
-%   pause(0.05)
-%   stairs(i:i+length(U)-1,U(1,:)','k')
+% %   stairs(i:i+length(U)-1,U(1,:)','r')
+%  % hold on
+%   XX = [XX, x];
+% %   stairs(i:i+length(U)-1,U(2,:)','b')
+%   x = sys.A*x+ sys.B*U(:,1);
+%  % pause(0.05)
+% %   stairs(i:i+length(U)-1,U(1,:)','k')
 %   implementedUtotal = [implementedUtotal U(:,1)];
 %   X0 = [X0 X(:,1)];
 % end
 
 %%
-figure(2)
-stairs(implementedUtotal(1,:),'color','r','lineWidth',1) %implementedUtotal
-hold on
-stairs(implementedUtotal(2,:),'color','b','lineWidth',1) %implementedUtotal
-legend('Input heater 1','Input heater 2')
-xlabel('Time [sec]')
-ylabel('Power Input [%]')
-set(gca,'FontSize',14)
+% figure(2)
+% stairs(implementedUtotal(1,:),'color','r','lineWidth',1) %implementedUtotal
+% hold on
+% stairs(implementedUtotal(2,:),'color','b','lineWidth',1) %implementedUtotal
+% legend('Input heater 1','Input heater 2')
+% xlabel('Time [sec]')
+% ylabel('Power Input [%]')
+% set(gca,'FontSize',14)
 
+%%
+% figure()
+% subplot(2,1,1)
+% 
+% hold on
+% plot(linspace(1,length(XX),length(XX)),XX(3,:)+Tamb,'LineWidth',1)
+% plot(linspace(1,length(XX),length(XX)),XX(4,:)+Tamb,'LineWidth',1)
+% plot(linspace(1,length(ref),length(ref)),ref(1,:)+Tamb,'k')
+% ylim([20 45])
+% legend('T1 MPC','T2 MPC');
+% xlim([0 500])
+% 
+% subplot(2,1,2)
+% hold on
+% plot(linspace(1,length(implementedUtotal),length(implementedUtotal)),implementedUtotal(1,:),'LineWidth',1)
+% plot(linspace(1,length(implementedUtotal),length(implementedUtotal)),implementedUtotal(2,:),'LineWidth',1)
+% legend('U1 MPC','U2 MPC');
+% xlim([0 500])
 
 %% Check 
 

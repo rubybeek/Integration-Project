@@ -26,13 +26,18 @@ if (rankcheck_co == min(size(Co))) && (rankcheck_ob == min(size(Ob)))
 else
     display('System is NOT controllable or observable');
 end
+% 
+% Ac = [Ac zeros(4,1) ; 0 0 0 0 1];
+% Bc = [Bc zeros(4,1); 0 0 -1];
+% Cc = [Cc zeros(2,1)];
+% Dc = 0;
+% lin_statespace = ss(Ac,Bc,Cc,Dc); 
 
-Ac = [Ac zeros(4,1) ; 0 0 0 0 1];
-Bc = [Bc zeros(4,1); 0 0 -1];
-Cc = [Cc zeros(2,1)];
-Dc = 0;
-lin_statespace = ss(Ac,Bc,Cc,Dc); 
-
+% Ac = [Ac zeros(4,2) ; Cc eye(2)];
+% Bc = [Bc; 0 0 ; 0 0]; % zeros(4,1) ;0 0 -1; 0 0 -1];
+% Cc = [Cc zeros(2,2)];
+% Dc = 0;
+% lin_statespace = ss(Ac,Bc,Cc,Dc); 
 %%
 
 Poles = [pole(lin_statespace)]'; %[-0.0313   -0.0313   -0.0044   -0.0134]
@@ -41,7 +46,7 @@ Poles_disc = [pole(lin_discrete)]';
 % p3 for faster T2 response, p4 for faster T1 response
 %P = [-0.035   -0.035   -0.0120   -0.0150];
 
-P = [-0.034   -0.034   -0.0120   -0.0200 0]; %THIS IS THE ONE
+P = [-0.034   -0.034   -0.0120   -0.0200 ]; %THIS IS THE ONE
 K = place(Ac,Bc,P);
 
 newsys = ss(Ac-Bc*K,Bc,Cc,Dc);
@@ -53,41 +58,13 @@ MIMO = tf(newsys);
 figure(1)
 step(MIMO)
 
-figure(2)
-step(lin_statespace)
+% figure(2)
+% step(lin_statespace)
 
 Kdc = dcgain(MIMO);
-Kr = inv(Kdc);
-   
-% MIMO_scaled = ss(Ac-Bc*K,Bc*Kr,Cc,Dc);
-% 
-% figure(3)
-% step(MIMO_scaled)
-% 
-% %% design observer 
-% % deze section is onnodig!
-% 
-% Ts = 1;
-% MIMO_scaleddiscr = c2d(MIMO_scaled,Ts);
-% 
-% figure(4)
-% bode(MIMO_scaled)
-% 
-% figure(5)
-% bode(lin_statespace)
-% 
-% figure(6)
-% step(MIMO_scaleddiscr)
+Kr = inv(Kdc(1:2,1:2));
 
 %% Observer Testing
-Rlqr = eye(2)*1E2*8;
-Rlqr = eye(2)*1E3;
-%Qlqr = eye(4);
-Qlqr = [50 0 0 0; 0 50 0 0; 0 0 1 0; 0 0 0 1];
-Qlqr = [30 0 0 0; 0 30 0 0; 0 0 10 0; 0 0 0 10];
-Qlqr = [100 0 0 0; 0 100 0 0; 0 0 100 0; 0 0 0 100];
-%[L,S,CLP] = dlqr(Ad',Cd',Qlqr,Rlqr,[]);
-
 %what we had: eye(2)*100,eye(2)*10E-2,eye(2)
 Qkal = [40 0; 0 40];
 Rkal =eye(2)*(1E-2)*5;
@@ -95,8 +72,6 @@ Nkal =eye(2);
 
 [KEST,L,Pkal] = kalman(lin_discrete,Qkal,Rkal,Nkal);
 %[X,Kobs,L] = idare(Ad,Bd,Qlqr,Rlqr,[],[]); 
-
-a = 5;
 
 load('data3.mat')
 uobs = data(:,3:4)';
@@ -117,7 +92,41 @@ plot(linspace(1,length(data),length(data)),x_data(2,:))
 plot(linspace(1,length(data),length(data)),xobs(4,:))
 legend('measured T1','Observed T1','measured T2','Observed T2')
 
-%%
+%% Simulation
+% Kx = K(1:2,1:4);
+% Ki = [0.1 0.1; 0.1 0.1];
+% x(:,1) = [0; 0; 0; 0];
+% %z(:,1) = [0;0];
+% 
+% for i = 1:3000
+%     if i <= 1000
+%         r(:,i) = [19;19]; %40 degree
+%     elseif (i > 1000) && (i <= 2000);
+%         r(:,i) = [14;14]; %35 degree
+%     else 
+%         r(:,i) = [24;24]; %45 degree
+%     end
+%     %u(:,i) = Kr*r(:,i) - Kx*x(:,i) - Ki*z(:,1);
+%     z(:,i) = Cd*x(:,i) - r(:,i);
+%     u(:,i) = Kr*r(:,i) - K*x(:,i) - Ki*z(:,i);
+%     
+%     if u(1,i) <= 0
+%         u(1,i) = 0;
+%     end
+%     if u(2,i) <= 0
+%         u(2,i) = 0;
+%     end
+% 
+%     x(:,i+1) = Ad*x(:,i) + Bd*u(:,i);% + L*(y - y_hat(:,i));
+% end
+% 
+% figure()
+% plot(linspace(1,length(x),length(x)),x(3,:))
+% hold on
+% plot(linspace(1,length(x),length(x)),x(4,:))
+% plot(linspace(1,length(r),length(r)),r(1,:))
+
+%% TCLAB
 Tamb = 21;
 r = [19;19];
 tclab;
@@ -134,16 +143,27 @@ ht2 = 0;
 h1(ht1);
 h2(ht2);
 
-for i = 1:1500  %x1 sec (Ts)
+switching ref, different per sensor
+r_input1(1,:) = repmat(19,1,600); %40 deg
+r_input1(2,:) = [repmat(10,1,500),repmat(14,1,300)]; %40 deg
+r_input2(1,:) = [repmat(14,1,500),repmat(22,1,300)]; %35 deg
+r_input2(2,:) = repmat(14,1,600); %35 deg
+r_input3(1,:) = repmat(22,1,600); %45 deg
+r_input3(2,:) = repmat(19,1,600); %45 deg
+ref = [r_input1 r_input2 r_input3];
+
+for i = 1:1000  %x1 sec (Ts)
     tic;
-    if i <= 500
-        r = [19;19]; %40 degree
-    elseif (i > 500) && (i <= 1000);
-        r = [14;14]; %35 degree
-    else 
-        r = [24;24]; %45 degree
-    end
-    u(:,i) = Kr*r - K*x(:,i) - Ki*z;
+%     if i <= 1000
+%         r(:,i) = [19;19]; %40 degree
+%     elseif (i > 1000) && (i <= 2000);
+%         r(:,i) = [14;14]; %35 degree
+%     else 
+%         r(:,i) = [24;24]; %45 degree
+%     end
+    y_hat(:,i) = Cd*x(:,i);
+    z(:,i) = y_hat(:,i) - r(:,i);
+    u(:,i) = Kr*r(:,i) - K*x(:,i) - z(:,i);
     
     if u(1,i) <= 0
         u(1,i) = 0;
@@ -151,6 +171,13 @@ for i = 1:1500  %x1 sec (Ts)
     if u(2,i) <= 0
         u(2,i) = 0;
     end
+    if u(1,i) >= 100
+        u(1,i) = 100;
+    end
+    if u(2,i) >= 100
+        u(2,i) = 100;
+    end
+    
     
     ht1 = u(1,i);
     ht2 = u(2,i);
@@ -159,8 +186,7 @@ for i = 1:1500  %x1 sec (Ts)
     t1 = T1C();
     t2 = T2C();
     y = [t1-Tamb; t2-Tamb];
-    y_hat(:,i) = Cd*x(:,i);
-    z(:,i) = y_hat(:,1) - r;
+    %y_hat(:,i) = Cd*x(:,i);
     x(:,i+1) = Ad*x(:,i) + Bd*u(:,i) + L*(y - y_hat(:,i));
     
     h1s = [h1s,ht1];
@@ -195,10 +221,10 @@ end
 h1(0);
 h2(0);
 
-%%
+%
 figure
 subplot(2,1,1)
-plot(linspace(1,length(x),length(x)),[ones(1,500)*19, ones(1,500)*14, ones(1,501)*24],'k')
+%plot(linspace(1,length(x),length(x)),[ones(1,500)*19, ones(1,500)*14, ones(1,501)*24],'k')
 hold on
 plot(linspace(1,length(t1s),length(t1s)),t1s-Tamb,'color','y');
 plot(linspace(1,length(x),length(x)),x(3,:),'LineWidth',1,'Color','b');

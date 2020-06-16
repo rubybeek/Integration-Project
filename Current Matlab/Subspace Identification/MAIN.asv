@@ -26,34 +26,34 @@ dataset2.InputName  = {'Input Sensor 1';'Input Sensor 2'};
 dataset2.OutputName = {'Output Sensor 1';'Output Sensor 2'};
 
 %% subspace identification Verhaegen
-% yold = data1(:,2:3);
-% uold = data1(:,4:5);
-% N = length(yold);
-% 
-% y = zeros(2*N,1);
-% u = zeros(2*N,1);
-% 
-% for i = 1:N
-%     y(2*i-1:2*i) = yold(i,:)';
-%     u(2*i-1:2*i) = uold(i,:)';
-% end
+yold = data1(:,2:3);
+uold = data1(:,4:5);
+N = length(yold);
+
+y = zeros(2*N,1);
+u = zeros(2*N,1);
+
+for i = 1:N
+    y(2*i-1:2*i) = yold(i,:)';
+    u(2*i-1:2*i) = uold(i,:)';
+end
 
 %% Subspace identificaton using Filtering book / RQ factorization / Verhaegen
 
-% %for i = 1:9
-% n = 10; %n = 1+i;
-% s = n*4;
-% 
-% [At, Bt, Ct, Dt, x0t, S, theta,Phi_N] = mysubid(y,u,s,n,yold,N);
-% 
-% Ts = 1;
-% sysd = ss(At,Bt,Ct,Dt,Ts);
-% sysc = d2c(sysd);
-% 
-% figure()
-% compare(dataset2,sysd);
-% title('Subspace identification using RQ Factorization')
-% %end
+%for i = 1:9
+n = 10; %n = 1+i;
+s = n*4;
+
+[At, Bt, Ct, Dt, x0t, S, theta,Phi_N] = mysubid(y,u,s,n,yold,N);
+
+Ts = 1;
+sysd = ss(At,Bt,Ct,Dt,Ts);
+sysc = d2c(sysd);
+
+figure()
+compare(dataset2,sysd);
+title('Subspace identification using RQ Factorization')
+%end
 
 %% Right choices
 % ssest_model1 = ssest(dataset1,6,'N4Weight','MOESP');
