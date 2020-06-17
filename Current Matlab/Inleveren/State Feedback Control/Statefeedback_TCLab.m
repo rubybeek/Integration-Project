@@ -2,7 +2,7 @@
 % State feedback controller for TCLab experiments
 %----------------------------------------------%
 % Different reference signals can be chosen on 
-% line 115 till 136
+% line 95 till 116
 %----------------------------------------------%
 
 clearvars
@@ -23,7 +23,6 @@ Dc = lin_statespace.D;
 Ts = 1;
 
 %% controllability test
-
 Co = ctrb(Ad,Bd);
 Ob = obsv(Ad,Cd); 
 

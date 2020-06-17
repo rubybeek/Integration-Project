@@ -1,3 +1,10 @@
+%----------------------------------------------%
+% State feedback controller for TCLab experiments
+%----------------------------------------------%
+% Different reference signals can be chosen on 
+% line 95 till 116
+%----------------------------------------------%
+
 clearvars
 close all
 
@@ -80,6 +87,7 @@ Nkal =eye(2);
 % plot(linspace(1,length(data),length(data)),x_data(2,:))
 % plot(linspace(1,length(data),length(data)),xobs(4,:))
 % legend('measured T1','Observed T1','measured T2','Observed T2')
+
 %% Different references
 x(:,1) = [0; 0; 0; 0];
 
@@ -100,52 +108,35 @@ Tamb = 21;
 
 r_input1 = repmat(9,2,600); %40 deg
 r_input2 = repmat(19,2,600); %35 deg
-% r_input3 = repmat(24,2,500+2*dim.N); %45 deg
 r = [r_input1 r_input2];
 
 %% simulation
-% for i = 1:600
-% %     if i <= 1000
-% %         r(:,i) = [19;19]; %40 degree
-% %     elseif (i > 1000) && (i <= 2000);
-% %         r(:,i) = [14;14]; %35 degree
-% %     else 
-% %         r(:,i) = [24;24]; %45 degree
-% %     end
-%     u(:,i) = Kr*r(:,i) - K*x(:,i);
-%  
-%     %u(:,i) = r(:,i) - Kx*x(:,i) - Ki*z(:,1);
-%     if u(1,i) <= 0
-%         u(1,i) = 0;
-%     end
-%     if u(2,i) <= 0
-%         u(2,i) = 0;
-%     end
-%     x(:,i+1) = Ad*x(:,i) + Bd*u(:,i);  
-%     %y = [x(3,i);x(4,i)];
-%     %y_hat(:,i) = Cd*x(:,i); 
-%     %z(:,i) = Cd*x(:,1) - r(:,1);
-%     %x(:,i+1) = Ad*x(:,i) + Bd*u(:,i) + L*(y - y_hat(:,i));
-% end
+for i = 1:1200
+    u(:,i) = Kr*r(:,i) - K*x(:,i);
+ 
+    if u(1,i) <= 0
+        u(1,i) = 0;
+    end
+    if u(2,i) <= 0
+        u(2,i) = 0;
+    end
+    x(:,i+1) = Ad*x(:,i) + Bd*u(:,i);  
+end
 %% Figures for simulation
-% figure()
-% subplot(2,1,1)
-% plot(linspace(1,length(x),length(x)),x(3,:)+Tamb,'LineWidth',1)
-% hold on
-% plot(linspace(1,length(x),length(x)),x(4,:)+Tamb,'LineWidth',1)
-% plot(linspace(1,length(r),length(r)),r(1,:)+Tamb,'k')
-% %plot(linspace(1,length(r),length(r)),r(2,:)+Tamb,'k
-% legend('T1','T2');
-% ylim([20 45])
-% xlim([0 500])
-% 
-% subplot(2,1,2)
-% plot(linspace(1,length(u),length(u)),u(1,:),'LineWidth',1)
-% hold on
-% plot(linspace(1,length(u),length(u)),u(2,:),'LineWidth',1)
-% legend('U1','U2');
-% xlim([0 500])
+figure()
+subplot(2,1,1)
+plot(linspace(1,length(x),length(x)),x(3,:)+Tamb,'LineWidth',1)
+hold on
+plot(linspace(1,length(x),length(x)),x(4,:)+Tamb,'LineWidth',1)
+plot(linspace(1,length(r),length(r)),r(1,:)+Tamb,'k')
+%plot(linspace(1,length(r),length(r)),r(2,:)+Tamb,'k
+legend('T1','T2');
+ylim([20 45])
+xlim([0 500])
 
-
-
-
+subplot(2,1,2)
+plot(linspace(1,length(u),length(u)),u(1,:),'LineWidth',1)
+hold on
+plot(linspace(1,length(u),length(u)),u(2,:),'LineWidth',1)
+legend('U1','U2');
+xlim([0 500])
