@@ -85,8 +85,8 @@ parameters_in = {x{1},[r{:}]};
 controller = optimizer(constraints, objective, options, parameters_in,{[u{:}],[x{:}]});
 
 %% Reference creation
-% % constant reference of 40 deg
-% ref = repmat(20,2,dim.N*3); 
+% constant reference of 40 deg
+ref = repmat(20,2,2500); 
 % 
 % switching straight reference
 % r_input1 = repmat(19,2,500); %40 deg
@@ -104,10 +104,10 @@ controller = optimizer(constraints, objective, options, parameters_in,{[u{:}],[x
 % r_input3(2,:) = repmat(19,1,400+2*dim.N); %45 deg
 % ref = [r_input1 r_input2 r_input3];
 
-% sinus wave reference
-load('referencesin3.mat') %period way to short
-ref = ref'-Tamb;
-ref = [ref;ref];
+% % sinus wave reference
+% load('referencesin2.mat') 
+% ref = ref'-Tamb;
+% ref = [ref;ref];
 % 
 % sine1 = dsp.SineWave(2,10);
 % sine1.SamplesPerFrame = 1000;
