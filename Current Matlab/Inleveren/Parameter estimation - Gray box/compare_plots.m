@@ -12,10 +12,9 @@ Q1 = z(:,4);
 Q2 = z(:,5);
 T1meas = z(:,2);
 T2meas = z(:,3);
-
-% number of time points
 ns = length(t);
 
+% load estimated parameters
 load('parameters2')
 
 p(1) = U;
@@ -66,7 +65,6 @@ y_2 = Tp(:,2);
 
 yhat_1 = T1meas;
 yhat_2 = T2meas;
-
 
 for i = 1:length(T1meas)
     VAF1_num = sum(norm((y_1(i,:) - yhat_1(i,:))^2),2);
