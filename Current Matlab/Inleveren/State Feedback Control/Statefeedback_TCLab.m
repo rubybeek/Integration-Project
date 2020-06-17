@@ -35,7 +35,7 @@ else
     display('System is NOT controllable or observable');
 end
 
-%%
+%% Poleplacement
 Poles = [pole(lin_statespace)]'; %[-0.0313   -0.0313   -0.0044   -0.0134]
 Poles_disc = [pole(lin_discrete)]';
 

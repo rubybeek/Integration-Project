@@ -34,7 +34,7 @@ else
     display('System is NOT controllable or observable');
 end
 
-%%
+%% Poleplacement
 
 Poles = [pole(lin_statespace)]'; %[-0.0313   -0.0313   -0.0044   -0.0134]
 Poles_disc = [pole(lin_discrete)]';
@@ -60,33 +60,6 @@ MIMO_scaled = ss(Ac-Bc*K,Bc*Kr,Cc,Dc);
 
 figure(3)
 step(MIMO_scaled)
-
-%% Observer Design
-Qkal = [40 0; 0 40];
-Rkal =eye(2)*(1E-2)*5;
-Nkal =eye(2);
-
-[KEST,L,Pkal] = kalman(lin_discrete,Qkal,Rkal,Nkal);
-
-%% Observer Testing
-% load('data3.mat')
-% uobs = data(:,3:4)';
-% x_data = data(:,1:2)';
-% xobs(:,1) = [21.8475; 20.8700; 21.8475; 20.8700];
-% 
-% for i = 1:length(data)-1
-%     yobs = x_data(:,i);
-%     y_hatobs = Cd*xobs(:,i);
-%     xobs(:,i+1) = Ad*xobs(:,i) + Bd*uobs(:,i)+ L*(yobs - y_hatobs);
-% end
-% 
-% figure
-% plot(linspace(1,length(data),length(data)),x_data(1,:))
-% hold on
-% plot(linspace(1,length(data),length(data)),xobs(3,:))
-% plot(linspace(1,length(data),length(data)),x_data(2,:))
-% plot(linspace(1,length(data),length(data)),xobs(4,:))
-% legend('measured T1','Observed T1','measured T2','Observed T2')
 
 %% Different references
 x(:,1) = [0; 0; 0; 0];
