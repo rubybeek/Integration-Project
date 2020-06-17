@@ -125,10 +125,15 @@ Tamb = 21;
 % r_input1(2,:) = [repmat(19,1,600)]; %40 deg
 % r = [r_input1];
 
-r_input1 = zeros(2,1500);
-r_input1(1,:) = [repmat(19,1,1500)]; %40 deg
-r_input1(2,:) = [repmat(19,1,300),repmat(24,1,300),repmat(14,1,300),repmat(24,1,300),repmat(14,1,300)]; %40 deg
-r = [r_input1];
+% r_input1 = zeros(2,1500);
+% r_input1(1,:) = [repmat(19,1,1500)]; %40 deg
+% r_input1(2,:) = [repmat(19,1,300),repmat(24,1,300),repmat(14,1,300),repmat(24,1,300),repmat(14,1,300)]; %40 deg
+% r = [r_input1];
+
+r_input1 = repmat(9,2,600); %40 deg
+r_input2 = repmat(19,2,600); %35 deg
+% r_input3 = repmat(24,2,500+2*dim.N); %45 deg
+r = [r_input1 r_input2];
 
 %% simulation
 % for i = 1:600
@@ -193,7 +198,7 @@ h2(ht2);
 %z(:,1) = [x(3,1);x(4,1)];
 
 
-for i = 1:2000  %x1 sec (Ts)
+for i = 1:1200  %x1 sec (Ts)
     tic;
 %     if i <= 500
 %         r = [19;19]; %40 degree
@@ -274,7 +279,7 @@ legend('Ref','Ref','T1','T1 observed','T2','T2 observed');
 ylabel('Temperature (deg)')
 xlabel('Time (s)')
 xlim([0 length(u)])
-
+ylim([15 45])
 
 subplot(2,1,2)% load('referencesin2.mat')
 % %load('referencesin3.mat')
