@@ -2,7 +2,7 @@
 % State feedback controller for TCLab experiments
 %----------------------------------------------%
 % Different reference signals can be chosen on 
-% line 95 till 116
+% line 92 till 119
 %----------------------------------------------%
 
 clearvars
@@ -92,31 +92,33 @@ Nkal =eye(2);
 x(:,1) = [0; 0; 0; 0];
 Tamb = 21;
 
-%switching ref, different per sensor
+% % switching ref, different per sensor
 % r_input1(1,:) = [repmat(19,1,600),repmat(14,1,500),repmat(22,1,300),repmat(22,1,600)]; %40 deg
 % r_input1(2,:) = [repmat(10,1,500),repmat(14,1,300),repmat(14,1,600),repmat(19,1,600)]; %40 deg
 % r = [r_input1];
 
+% % Constant ref, 40 degrees
 % r_input1(1,:) = [repmat(19,1,600)]; %40 deg
 % r_input1(2,:) = [repmat(19,1,600)]; %40 deg
 % r = [r_input1];
 
+% % sensor 1 constant ref, sensor 2 varying ref
 % r_input1 = zeros(2,1500);
 % r_input1(1,:) = [repmat(19,1,1500)]; %40 deg
 % r_input1(2,:) = [repmat(19,1,300),repmat(24,1,300),repmat(14,1,300),repmat(24,1,300),repmat(14,1,300)]; %40 deg
 % r = [r_input1];
 
+% % sinewave reference
 % load('referencesin2.mat')
-% %load('referencesin3.mat')
 % %ref = [ref ref]'-Tamb; %average at 30 deg
 % r = [ref ref]'-Tamb+5; %average at 35 deg
 
-r_input1 = repmat(9,2,600); %30 deg
-r_input2 = repmat(19,2,600); %40 deg
+% % switching ref, same per sensor
+r_input1 = repmat(9,2,600); %40 deg
+r_input2 = repmat(19,2,600); %35 deg
 r = [r_input1 r_input2];
 
 %%
-Tamb = 21;
 tclab;
 x(:,1) = [T1C()-Tamb; T2C()-Tamb; T1C()-Tamb; T2C()-Tamb];
 

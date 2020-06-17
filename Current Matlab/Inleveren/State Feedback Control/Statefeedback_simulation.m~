@@ -2,7 +2,7 @@
 % State feedback controller for TCLab experiments
 %----------------------------------------------%
 % Different reference signals can be chosen on 
-% line 69 till 93
+% line 65 till 84
 %----------------------------------------------%
 
 clearvars
@@ -65,7 +65,6 @@ step(MIMO_scaled)
 x(:,1) = [0; 0; 0; 0];
 
 Tamb = 21;
-
 % % switching ref, different per sensor
 % r_input1(1,:) = [repmat(19,1,600),repmat(14,1,500),repmat(22,1,300),repmat(22,1,600)]; %40 deg
 % r_input1(2,:) = [repmat(10,1,500),repmat(14,1,300),repmat(14,1,600),repmat(19,1,600)]; %40 deg
@@ -87,7 +86,7 @@ Tamb = 21;
 % %ref = [ref ref]'-Tamb; %average at 30 deg
 % r = [ref ref]'-Tamb+5; %average at 35 deg
 
-% % switching ref, same per sensor
+% % switching ref
 r_input1 = repmat(9,2,600); %40 deg
 r_input2 = repmat(19,2,600); %35 deg
 r = [r_input1 r_input2];
